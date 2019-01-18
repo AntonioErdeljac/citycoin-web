@@ -44,3 +44,9 @@ module.exports.getBySessionToken = (token) => {
 
   return Users.findOne(query);
 };
+
+module.exports.getById = (id) => {
+  const query = { _id: id };
+
+  return Users.findOne(query);
+};
