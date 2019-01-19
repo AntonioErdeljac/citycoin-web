@@ -28,6 +28,6 @@ module.exports = async (req, res) => {
 
     return res.status(200).end();
   } catch (error) {
-    return errors.respond(error);
+    return errors.respond(res, error);
   }
 };

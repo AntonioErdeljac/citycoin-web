@@ -1,7 +1,9 @@
 const _ = require('lodash');
 const db = require('../../db');
 const { errorMessages } = require('../../constants');
-const { errors, hash, tokens, build, cookies } = require('../../utils');
+const { errors, hash, tokens, build } = require('../../utils');
+
+const { cookies } = require('../../../common/constants');
 
 module.exports = async (req, res) => {
   try {
@@ -16,7 +18,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({ message: errorMessages.LOGIN_400 }).end();
     }
 
-    if (user.authenticatoin.password !== hash.password(user.authentication.salt, req.body.password)) {
+    if (user.authentication.password !== hash.password(user.authentication.salt, req.body.password)) {
       return res.status(400).json({ message: errorMessages.LOGIN_400 }).end();
     }
 
