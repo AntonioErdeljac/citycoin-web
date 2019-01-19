@@ -27,6 +27,7 @@
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.12.4",
     "express": "4.16.4",
+    "keymirror": "0.1.1",
     "lodash": "4.17.11",
     "mongoose": "5.4.4"
   }

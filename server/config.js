@@ -7,3 +7,7 @@ module.exports.protocol = protocol;
 module.exports.port = port;
 
 module.exports.serverUrl = process.env.SERVER_URL || `${protocol}${domain}${port ? `:${port}` : ''}`;
+
+module.exports.mongodb = {
+  uri: 'mongodb://localhost:27017/citycoin',
+};
