@@ -26,6 +26,7 @@ const Users = mongoose.model('users', new Schema({
   },
   personal: {
     firstName: types.string({ required: true }),
+    imageUrl: types.string(),
     lastName: types.string({ required: true }),
     nin: types.string({ required: true }),
   },

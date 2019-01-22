@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 
     const user = await db.Users.getBySessionToken(token).lean();
 
-    if (user) {
+    if (!user) {
       res.clearCookie(cookies.AUTHENICATION, build.cookieOptions());
 
       if (req.path.indexOf('/api/') === 0) {

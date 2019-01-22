@@ -24,7 +24,7 @@ module.exports.create = (values) => {
   return Cities(city).save();
 };
 
-module.exports.findById = (id) => {
+module.exports.getById = (id) => {
   const query = { _id: id };
 
   return Cities.findOne(query);

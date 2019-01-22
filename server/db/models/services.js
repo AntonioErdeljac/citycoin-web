@@ -18,7 +18,7 @@ const Services = mongoose.model('services', new Schema({
   type: types.string({ enum: _.keys(servicesTypes) }),
   subscriptions: [{
     price: types.number({ required: true }),
-    duration: types.string({ required: true }),
+    description: types.string(),
   }],
 }, { timestamps: true }));
 
@@ -30,7 +30,7 @@ module.exports.create = (values) => {
   return Services(service).save();
 };
 
-module.exports.findById = (id) => {
+module.exports.getById = (id) => {
   const query = { _id: id };
 
   return Services.findOne(query);

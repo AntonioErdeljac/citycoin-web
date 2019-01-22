@@ -14,6 +14,8 @@ app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.use('/static', express.static('./static'));
+
 app.use('/', routes());
 
 http.createServer(app).listen(config.port);
