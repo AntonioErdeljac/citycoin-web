@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const db = require('../../db');
 const { errorMessages } = require('../../constants');
 const { errors, hash, tokens, build } = require('../../utils');
@@ -28,7 +27,7 @@ module.exports = async (req, res) => {
 
     await user.save();
 
-    return res.status(200).json(_.omit(user.toObject(), ['authentication'])).end();
+    return res.status(200).json(user).end();
   } catch (error) {
     return errors.respond(res, error);
   }

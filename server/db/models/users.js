@@ -52,7 +52,7 @@ module.exports.getByEmail = (email) => {
 };
 
 module.exports.getBySessionToken = (token) => {
-  const query = { 'authentication.sesstionToken': token };
+  const query = { 'authentication.sessionToken': token };
 
   return Users.findOne(query);
 };
