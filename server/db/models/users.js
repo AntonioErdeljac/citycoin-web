@@ -8,6 +8,9 @@ const { userTypes } = require('../../../common/constants');
 const { Schema } = mongoose;
 
 const Users = mongoose.model('users', new Schema({
+  wallet: {
+    amount: types.number({ default: 0 }),
+  },
   authentication: {
     password: types.string({ select: false }),
     salt: types.string({ select: false }),
