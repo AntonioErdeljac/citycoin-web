@@ -13,7 +13,7 @@ const Cities = mongoose.model('cities', new Schema({
     countryCode: types.string({ required: true }),
     iata: types.string({ required: true }),
   },
-  amenities: [{ ref: 'amenities', type: Schema.Types.ObjectId }],
+  services: [{ ref: 'services', type: Schema.Types.ObjectId }],
 }, { timestamps: true }));
 
 module.exports.isValid = values => !Cities(values).validateSync();

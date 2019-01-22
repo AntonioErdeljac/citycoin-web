@@ -8,8 +8,8 @@ const { userTypes } = require('../../../common/constants');
 const { Schema } = mongoose;
 
 const Users = mongoose.model('users', new Schema({
-  activeAmenities: [{
-    amenityId: { ref: 'amenities', type: Schema.Types.ObjectId },
+  activeServices: [{
+    serviceId: { ref: 'services', type: Schema.Types.ObjectId },
     startsAt: types.date(),
     endsAt: types.date(),
   }],
@@ -29,7 +29,7 @@ const Users = mongoose.model('users', new Schema({
     lastName: types.string({ required: true }),
     nin: types.string({ required: true }),
   },
-  type: types.string({ required: true, enum: _.keys(userTypes), default: userTypes.CITIZEN }),
+  type: types.string({ required: true, enum: _.keys(userTypes), default: userTypes.REGULAR }),
 
   __v: types.number({ select: false }),
   createdAt: types.date(),

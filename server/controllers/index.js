@@ -1,5 +1,5 @@
-const amenities = require('./amenities');
 const authentication = require('./authentication');
+const services = require('./services');
 
-module.exports.amenities = amenities;
 module.exports.authentication = authentication;
+module.exports.services = services;
