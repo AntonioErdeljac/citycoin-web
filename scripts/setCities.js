@@ -26,15 +26,65 @@ const services = [
       price: '276',
     }],
   },
+  {
+    company: {
+      name: 'HALUbike',
+      nin: '111',
+    },
+    general: {
+      name: 'HALUBike',
+    },
+    type: 'BIKE',
+    subscriptions: [{
+      price: '180',
+    }],
+  },
+  {
+    company: {
+      name: 'Rijeka sport d.o.o.',
+      nin: '73293310543',
+    },
+    general: {
+      name: 'Bazeni Kantrida',
+    },
+    type: 'GYM',
+    subscriptions: [{
+      price: '100',
+    }],
+  },
+  {
+    company: {
+      name: 'Rijeka sport d.o.o.',
+      nin: '73293310543',
+    },
+    general: {
+      name: 'Stadion Kantrida',
+    },
+    type: 'GYM',
+    subscriptions: [{
+      price: '100',
+    }],
+  },
+  {
+    company: {
+      name: 'Rijeka sport d.o.o.',
+      nin: '73293310543',
+    },
+    general: {
+      name: 'Astronomski centar Rijeka',
+    },
+    type: 'OTHER',
+    subscriptions: [{
+      price: '100',
+    }],
+  },
 ];
 
-const createService = async () => {
+const createServices = async () => {
   try {
-    const service = services[0];
+    const createdServices = await Promise.all(services.map((service => db.Services.create(service))));
 
-    const createdService = await db.Services.create(service);
-
-    return createdService;
+    return createdServices;
   } catch (error) {
     return console.log(error);
   }
@@ -42,9 +92,9 @@ const createService = async () => {
 
 module.exports = async () => {
   try {
-    const service = await createService();
+    const cityServices = await createServices();
 
-    const city = { ...cities[0], services: [{ _id: service._id }] };
+    const city = { ...cities[0], services: cityServices };
 
     await db.Cities.create(city);
   } catch (error) {
