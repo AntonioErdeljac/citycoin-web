@@ -8,6 +8,11 @@ const { userTypes } = require('../../../common/constants');
 const { Schema } = mongoose;
 
 const Users = mongoose.model('users', new Schema({
+  activeAmenities: [{
+    amenityId: { ref: 'amenities', type: Schema.Types.ObjectId },
+    startsAt: types.date(),
+    endsAt: types.date(),
+  }],
   wallet: {
     amount: types.number({ default: 0 }),
   },
