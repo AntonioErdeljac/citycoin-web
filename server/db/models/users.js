@@ -1,9 +1,11 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose;
-
 const types = require('./types');
+
+const { userTypes } = require('../../../common/constants');
+
+const { Schema } = mongoose;
 
 const Users = mongoose.model('users', new Schema({
   authentication: {
@@ -17,7 +19,9 @@ const Users = mongoose.model('users', new Schema({
   personal: {
     firstName: types.string({ required: true }),
     lastName: types.string({ required: true }),
+    nin: types.string({ required: true }),
   },
+  type: types.string({ required: true, enum: _.keys(userTypes), default: userTypes.CITIZEN }),
 
   __v: types.number({ select: false }),
   createdAt: types.date(),
