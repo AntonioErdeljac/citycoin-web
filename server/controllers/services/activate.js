@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const db = require('../../db');
 const { errorMessages } = require('../../constants');
 const { errors } = require('../../utils');
@@ -7,24 +9,33 @@ module.exports = async (req, res) => {
     const { user } = req.identity;
 
     if (!req.params.id) {
-      res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
+      return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
+    }
+
+    if (!req.params.subscriptionId) {
+      return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
     }
 
     const service = await db.Services.getById(req.params.id);
 
     if (!service) {
-      res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
+      return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
     }
 
+    const subscription = await db.Subscriptions.getById(req.params.subscriptionId);
+
     const activeService = {
+      endsAt: moment(new Date()).add(subscription.duration, subscription.unit),
       serviceId: service._id,
       startsAt: new Date(),
-      endsAt: new Date() + 1,
+      subscriptionId: subscription._id,
     };
 
-    user.activeServices.concat(activeService);
+    const foundUser = await db.Users.getById(user._id);
 
-    await user.save();
+    foundUser.activeServices.concat(activeService);
+
+    await foundUser.save();
 
     return res.status(200).end();
   } catch (error) {

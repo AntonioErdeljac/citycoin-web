@@ -16,10 +16,7 @@ const Services = mongoose.model('services', new Schema({
     name: types.string({ required: true }),
   },
   type: types.string({ enum: _.keys(servicesTypes) }),
-  subscriptions: [{
-    price: types.number({ required: true }),
-    description: types.string(),
-  }],
+  subscriptions: [{ ref: 'subscriptions', type: Schema.Types.ObjectId }],
 }, { timestamps: true }));
 
 module.exports.isValid = values => !Services(values).validateSync();
