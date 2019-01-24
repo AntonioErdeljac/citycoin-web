@@ -22,67 +22,69 @@ const services = [
       name: 'Autotrolej',
     },
     type: 'BUS',
-    subscriptions: [{
-      price: '276',
-    }],
   },
-  {
-    company: {
-      name: 'HALUbike',
-      nin: '111',
-    },
-    general: {
-      name: 'HALUBike',
-    },
-    type: 'BIKE',
-    subscriptions: [{
-      price: '180',
-    }],
-  },
-  {
-    company: {
-      name: 'Rijeka sport d.o.o.',
-      nin: '73293310543',
-    },
-    general: {
-      name: 'Bazeni Kantrida',
-    },
-    type: 'GYM',
-    subscriptions: [{
-      price: '100',
-    }],
-  },
-  {
-    company: {
-      name: 'Rijeka sport d.o.o.',
-      nin: '73293310543',
-    },
-    general: {
-      name: 'Stadion Kantrida',
-    },
-    type: 'GYM',
-    subscriptions: [{
-      price: '100',
-    }],
-  },
-  {
-    company: {
-      name: 'Rijeka sport d.o.o.',
-      nin: '73293310543',
-    },
-    general: {
-      name: 'Astronomski centar Rijeka',
-    },
-    type: 'OTHER',
-    subscriptions: [{
-      price: '100',
-    }],
-  },
+  // {
+  //   company: {
+  //     name: 'HALUbike',
+  //     nin: '111',
+  //   },
+  //   general: {
+  //     name: 'HALUBike',
+  //   },
+  //   type: 'BIKE',
+  // },
+  // {
+  //   company: {
+  //     name: 'Rijeka sport d.o.o.',
+  //     nin: '73293310543',
+  //   },
+  //   general: {
+  //     name: 'Bazeni Kantrida',
+  //   },
+  //   type: 'GYM',
+  // },
+  // {
+  //   company: {
+  //     name: 'Rijeka sport d.o.o.',
+  //     nin: '73293310543',
+  //   },
+  //   general: {
+  //     name: 'Stadion Kantrida',
+  //   },
+  //   type: 'GYM',
+  // },
+  // {
+  //   company: {
+  //     name: 'Rijeka sport d.o.o.',
+  //     nin: '73293310543',
+  //   },
+  //   general: {
+  //     name: 'Astronomski centar Rijeka',
+  //   },
+  //   type: 'OTHER',
+  // },
 ];
 
 const createServices = async () => {
   try {
-    const createdServices = await Promise.all(services.map((service => db.Services.create(service))));
+    const subscriptions = [
+      {
+        description: 'Dnevna karta',
+        price: 15,
+        duration: 1,
+        durationUnit: 'hours',
+      },
+      {
+        description: 'Mjesecna karta',
+        price: 200,
+        duration: 1,
+        durationUnit: 'months',
+      },
+    ];
+
+    const createdSubscriptions = await Promise.all(subscriptions.map(subscription => db.Subscriptions.create(subscription)));
+
+    const createdServices = await Promise.all(services.map((service => db.Services.create({ ...service, subscriptions: createdSubscriptions.map(subscription => subscription._id) }))));
 
     return createdServices;
   } catch (error) {
