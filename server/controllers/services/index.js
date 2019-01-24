@@ -1,7 +1,7 @@
-const activate = require('./activate');
 const create = require('./create');
 const getById = require('./getById');
+const subscribe = require('./subscribe');
 
-module.exports.activate = activate;
 module.exports.create = create;
 module.exports.getById = getById;
+module.exports.subscribe = subscribe;

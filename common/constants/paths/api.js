@@ -4,6 +4,6 @@ module.exports.v1 = {
   AUTHENTICATION_REGISTRATION: '/api/v1/authentication/registration',
   CITIES_ID: '/api/v1/cities/:id',
   SERVICES: '/api/v1/services',
-  SERVICES_ACTIVATE_ID: '/api/v1/services/activate/:id',
   SERVICES_ID: '/api/v1/sevices/:id',
+  SERVICES_ID_SUBSCRIPTIONS_ID: '/api/v1/services/:id/subscrptions/:subscriptionId',
 };
