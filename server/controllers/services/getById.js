@@ -8,7 +8,8 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
     }
 
-    const service = await db.Services.getById(req.params.id);
+    const service = await db.Services.getById(req.params.id)
+      .populate('subscriptions');
 
     if (!service) {
       return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
