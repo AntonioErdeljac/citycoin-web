@@ -1,4 +1,4 @@
-const moment = require('moment');
+const _ = require('lodash');
 
 const db = require('../../db');
 const { errorMessages } = require('../../constants');
@@ -17,25 +17,26 @@ module.exports = async (req, res) => {
     }
 
     const service = await db.Services.getById(req.params.id);
-
     if (!service) {
       return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
     }
 
     const subscription = await db.Subscriptions.getById(req.params.subscriptionId);
-
-    const subscribedService = {
-      endsAt: moment(new Date()).add(subscription.duration, subscription.unit),
-      serviceId: service._id,
-      startsAt: new Date(),
-      subscriptionId: subscription._id,
-    };
+    if (!subscription) {
+      return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
+    }
 
     const foundUser = await db.Users.getById(user._id);
 
-    foundUser.subscribedServices.concat(subscribedService);
+    const subscribedService = _.find(foundUser.subscribedServices, { serviceId: req.params.id });
+    if (!subscribedService) {
+      return res.status(400).json({ message: errorMessages.SERVICES_VALIDATE_400 }).end();
+    }
 
-    await foundUser.save();
+    const serviceSubscription = _.find(foundUser.subscribedServices, { subscriptionId: req.params.subscriptionId });
+    if (!serviceSubscription) {
+      return res.status(400).json({ message: errorMessages.SERVICES_VALIDATE_400 }).end();
+    }
 
     return res.status(200).end();
   } catch (error) {

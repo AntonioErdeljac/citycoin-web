@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 
 const types = require('./types');
 
-const { subscriptionUnitTypes } = require('../../../common/constants');
+const { subscriptionsDurationUnitTypes } = require('../../../common/constants');
 
 const { Schema } = mongoose;
 
 const Subscriptions = mongoose.model('subscriptions', new Schema({
   description: types.number({ required: true }),
   duration: types.number({ required: true }),
+  durationUnit: types.string({ enum: _.keys(subscriptionsDurationUnitTypes) }),
   price: types.number({ required: true }),
-  unit: types.string({ enum: _.keys(subscriptionUnitTypes) }),
 }, { timestamps: true }));
 
 module.exports.isValid = values => !Subscriptions(values).validateSync();
