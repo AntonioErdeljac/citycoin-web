@@ -24,6 +24,10 @@ module.exports = async (req, res) => {
 
     const subscription = await db.Subscriptions.getById(req.params.subscriptionId);
 
+    if (!subscription) {
+      return res.status(404).json({ message: errorMessages.SUBSCRIPTIONS_404 }).end();
+    }
+
     const subscribedService = {
       endsAt: moment(new Date()).add(subscription.duration, subscription.unit),
       serviceId: service._id,
