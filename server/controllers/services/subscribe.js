@@ -28,6 +28,10 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.SUBSCRIPTIONS_404 }).end();
     }
 
+    if (subscription.price > user.wallet.amount) {
+      return res.status(400).json({ message: errorMessages.SERVICE_INSUFFICIENT_FUNDS_400 }).end();
+    }
+
     const subscribedService = {
       endsAt: moment(new Date()).add(subscription.duration, subscription.unit),
       serviceId: service._id,
@@ -37,7 +41,9 @@ module.exports = async (req, res) => {
 
     const foundUser = await db.Users.getById(user._id);
 
-    foundUser.subscribedServices.concat(subscribedService);
+    foundUser.subscribedServices = [subscribedService, ...foundUser.subscribedServices];
+
+    foundUser.wallet.amount -= subscription.price;
 
     await foundUser.save();
 
