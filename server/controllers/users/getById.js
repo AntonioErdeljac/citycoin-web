@@ -9,7 +9,8 @@ module.exports = async (req, res) => {
     }
 
     const user = await db.Users.getById(req.params.id)
-      .populate('activeServices');
+      .populate('subscribedServices.serviceId')
+      .populate('subscribedServices.subscriptionId');
 
     if (!user) {
       return res.status(404).json({ message: errorMessages.USER_404 }).end();
