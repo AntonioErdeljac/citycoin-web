@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
 
     const wallet = await db.Wallets.create();
 
-    user.wallet = wallet._id;
+    user.walletId = wallet._id;
 
     await db.Users.create(user);
 

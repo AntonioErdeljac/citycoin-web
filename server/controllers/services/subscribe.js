@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.SUBSCRIPTIONS_404 }).end();
     }
 
-    const wallet = await db.Wallets.getById(user.wallet);
+    const wallet = await db.Wallets.getById(user.walletId);
 
     if (!wallet) {
       return res.status(404).json({ message: errorMessages.WALLET_404 }).end();
