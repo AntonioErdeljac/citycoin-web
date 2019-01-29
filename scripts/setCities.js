@@ -23,6 +23,26 @@ const services = [
     },
     type: 'BUS',
   },
+  {
+    company: {
+      name: 'Rijeka Sport d.o.o.',
+      nin: '19081493664',
+    },
+    general: {
+      name: 'Stadion Kantrida',
+    },
+    type: 'GYM',
+  },
+  {
+    company: {
+      name: 'Rijeka Sport d.o.o.',
+      nin: '19081493664',
+    },
+    general: {
+      name: 'Bazeni Kantrida',
+    },
+    type: 'GYM',
+  },
   // {
   //   company: {
   //     name: 'HALUbike',
