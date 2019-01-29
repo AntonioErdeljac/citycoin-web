@@ -28,7 +28,13 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.SUBSCRIPTIONS_404 }).end();
     }
 
-    if (subscription.price > user.wallet.amount) {
+    const wallet = await db.Wallets.getById(user.wallet);
+
+    if (!wallet) {
+      return res.status(404).json({ message: errorMessages.WALLET_404 }).end();
+    }
+
+    if (subscription.price > wallet.general.amount) {
       return res.status(400).json({ message: errorMessages.SERVICE_INSUFFICIENT_FUNDS_400 }).end();
     }
 
@@ -43,7 +49,9 @@ module.exports = async (req, res) => {
 
     foundUser.subscribedServices = [subscribedService, ...foundUser.subscribedServices];
 
-    foundUser.wallet.amount -= subscription.price;
+    wallet.general.amount -= subscription.price;
+
+    await wallet.save();
 
     await foundUser.save();
 

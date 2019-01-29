@@ -9,4 +9,5 @@ module.exports = {
   USER_404: 'User does not exist',
   USER_EMAIL_409: 'Email is already taken',
   USER_PASSWORD_400: 'Password is too short',
+  WALLET_404: 'Wallet does not exist',
 };

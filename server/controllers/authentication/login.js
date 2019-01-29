@@ -11,7 +11,8 @@ module.exports = async (req, res) => {
     }
 
     const user = await db.Users.getByEmail(req.body.email)
-      .select('+authentication.password +authentication.salt');
+      .select('+authentication.password +authentication.salt')
+      .populate('wallet');
 
     if (!user) {
       return res.status(400).json({ message: errorMessages.LOGIN_400 }).end();

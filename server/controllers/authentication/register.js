@@ -24,6 +24,10 @@ module.exports = async (req, res) => {
       password: hash.password(salt, user.authentication.password),
     };
 
+    const wallet = await db.Wallets.create();
+
+    user.wallet = wallet._id;
+
     await db.Users.create(user);
 
     return res.status(200).end();

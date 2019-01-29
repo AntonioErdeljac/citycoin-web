@@ -14,9 +14,7 @@ const Users = mongoose.model('users', new Schema({
     startsAt: types.date(),
     subscriptionId: { ref: 'subscriptions', type: Schema.Types.ObjectId },
   }],
-  wallet: {
-    amount: types.number({ default: 0 }),
-  },
+  wallet: { ref: 'wallets', type: Schema.Types.ObjectId },
   authentication: {
     password: types.string({ select: false }),
     salt: types.string({ select: false }),
