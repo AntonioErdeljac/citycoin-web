@@ -6,6 +6,7 @@ module.exports.v1 = {
   SERVICES: '/api/v1/services',
   SERVICES_ID: '/api/v1/services/:id',
   SERVICES_ID_SUBSCRIPTIONS_ID: '/api/v1/services/:id/subscrptions/:subscriptionId',
+  SUBSCRIBED_SERVICES_ID: '/api/v1/subscribed-services/:id',
   USERS_ID: '/api/v1/users/:id',
   WALLETS_ID: '/api/v1/wallets/:id',
 };

@@ -11,6 +11,18 @@ module.exports = async (req, res) => {
     }
 
     const user = await db.Users.getByEmail(req.body.email)
+      .populate({
+        path: 'subscribedServices',
+        populate: {
+          path: 'serviceId',
+        },
+      })
+      .populate({
+        path: 'subscribedServices',
+        populate: {
+          path: 'subscriptionId',
+        },
+      })
       .select('+authentication.password +authentication.salt');
 
     if (!user) {

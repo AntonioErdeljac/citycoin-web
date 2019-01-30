@@ -8,12 +8,7 @@ const { userTypes } = require('../../../common/constants');
 const { Schema } = mongoose;
 
 const Users = mongoose.model('users', new Schema({
-  subscribedServices: [{
-    endsAt: types.date(),
-    serviceId: { ref: 'services', type: Schema.Types.ObjectId },
-    startsAt: types.date(),
-    subscriptionId: { ref: 'subscriptions', type: Schema.Types.ObjectId },
-  }],
+  subscribedServices: [{ ref: 'subscribedServices', type: Schema.Types.ObjectId }],
   walletId: { ref: 'wallets', type: Schema.Types.ObjectId },
   authentication: {
     password: types.string({ select: false }),

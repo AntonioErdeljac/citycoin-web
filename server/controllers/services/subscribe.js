@@ -45,9 +45,11 @@ module.exports = async (req, res) => {
       subscriptionId: subscription._id,
     };
 
+    const createdSubscribedService = await db.SubscribedServices.create(subscribedService);
+
     const foundUser = await db.Users.getById(user._id);
 
-    foundUser.subscribedServices = [subscribedService, ...foundUser.subscribedServices];
+    foundUser.subscribedServices = [createdSubscribedService._id, ...foundUser.subscribedServices];
 
     wallet.general.amount -= subscription.price;
 

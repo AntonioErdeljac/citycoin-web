@@ -5,6 +5,7 @@ module.exports = {
   SERVICES_404: 'Service does not exist',
   SERVICES_VALIDATE_400: 'Failed to validate service',
   SERVICE_INSUFFICIENT_FUNDS_400: 'Insufficient funds',
+  SUBSCRIBED_SERVICE_404: 'Subscribed service does not exist',
   SUBSCRIPTIONS_404: 'Subscription does not exist',
   USER_404: 'User does not exist',
   USER_EMAIL_409: 'Email is already taken',

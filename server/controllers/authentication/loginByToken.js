@@ -9,6 +9,18 @@ module.exports = async (req, res) => {
     }
 
     const user = await db.Users.getBySessionToken(req.params.token)
+      .populate({
+        path: 'subscribedServices',
+        populate: {
+          path: 'serviceId',
+        },
+      })
+      .populate({
+        path: 'subscribedServices',
+        populate: {
+          path: 'subscriptionId',
+        },
+      })
       .select('+authentication.password +authentication.salt');
 
     if (!user) {
