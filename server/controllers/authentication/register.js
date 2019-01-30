@@ -1,8 +1,8 @@
 const db = require('../../db');
 const { errorMessages } = require('../../constants');
-const { tokens, hash, errors } = require('../../utils');
+const { tokens, hash, errors, build } = require('../../utils');
 
-const { MIN_PASSWORD_LENGTH } = require('../../../common/constants');
+const { MIN_PASSWORD_LENGTH, cookies } = require('../../../common/constants');
 
 module.exports = async (req, res) => {
   try {
@@ -28,9 +28,18 @@ module.exports = async (req, res) => {
 
     user.walletId = wallet._id;
 
-    await db.Users.create(user);
+    const createdUser = await db.Users.create(user);
 
-    return res.status(200).end();
+    const foundUser = await db.Users.getById(createdUser._id)
+      .select('+authentication.password +authentication.salt');
+
+    foundUser.authentication.sessionToken = hash.authentication(tokens.generate(), foundUser._id);
+
+    await foundUser.save();
+
+    res.cookie(cookies.AUTHENTICATION, foundUser.authentication.sessionToken, build.cookieOptions());
+
+    return res.status(200).json(foundUser).end();
   } catch (error) {
     return errors.respond(res, error);
   }

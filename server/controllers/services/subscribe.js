@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
 
     await foundUser.save();
 
-    return res.status(200).end();
+    return res.status(200).json(createdSubscribedService).end();
   } catch (error) {
     return errors.respond(res, error);
   }
