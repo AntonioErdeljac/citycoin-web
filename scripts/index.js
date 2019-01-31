@@ -1,7 +1,11 @@
-const setCities = require('./setCities');
+const setRijeka = require('./setRijeka');
+const setKastav = require('./setKastav');
+const setZagreb = require('./setZagreb');
 
 const run = async () => {
-  await setCities();
+  await setRijeka();
+  await setKastav();
+  await setZagreb();
 
   process.exit();
 };

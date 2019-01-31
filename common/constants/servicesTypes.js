@@ -4,6 +4,7 @@ module.exports = keyMirror({
   APARTMENT: null,
   BIKE: null,
   BUS: null,
+  EDUCATION: null,
   GYM: null,
   HOTEL: null,
   OTHER: null,

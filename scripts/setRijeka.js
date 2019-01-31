@@ -6,7 +6,7 @@ const cities = [
       name: 'Rijeka',
     },
     location: {
-      coordinates: [45, 15],
+      coordinates: [45.3271, 14.4422],
       type: 'Point',
     },
     info: {

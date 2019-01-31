@@ -17,7 +17,7 @@ const Cities = mongoose.model('cities', new Schema({
   },
   info: {
     countryCode: types.string({ required: true }),
-    iata: types.string({ required: true }),
+    iata: types.string(),
   },
   services: [{ ref: 'services', type: Schema.Types.ObjectId }],
 }, { timestamps: true }));
