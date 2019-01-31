@@ -10,4 +10,5 @@ module.exports.v1 = {
   SUBSCRIBED_SERVICES_ID_VERIFICATION: '/api/v1/subscribed-services/:id/verification',
   USERS_ID: '/api/v1/users/:id',
   WALLETS_ID: '/api/v1/wallets/:id',
+  CITIES: '/api/v1/cities',
 };

@@ -6,6 +6,10 @@ const cities = [
       name: 'Rijeka',
     },
     location: {
+      coordinates: [45, 15],
+      type: 'Point',
+    },
+    info: {
       countryCode: 'HR',
       iata: 'RJK',
     },
