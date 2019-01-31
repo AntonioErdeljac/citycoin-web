@@ -42,7 +42,7 @@ module.exports.get = (options = {}) => {
   let query = {};
 
   if (latitude && longitude) {
-    return Cities.aggregate([
+    const geoNearAggregation = [
       {
         $geoNear: {
           near: {
@@ -53,8 +53,25 @@ module.exports.get = (options = {}) => {
           distanceField: 'dist.calculated',
         },
       },
+      {
+        $match: {
+          'general.name': new RegExp(_.escapeRegExp(_.trim(keyword)), 'i'),
+        },
+      },
+    ];
+
+    return Promise.all([
+      Cities.aggregate([
+        ...geoNearAggregation,
+      ]),
+      Cities.aggregate([
+        ...geoNearAggregation,
+        {
+          $count: 'total',
+        },
+      ]),
     ])
-      .then(results => results);
+      .then(([data, total]) => Promise.resolve({ data, total: total[0] ? total[0].total : 0 }));
   }
 
   if (keyword) {

@@ -1,5 +1,4 @@
 const db = require('../../db');
-const { errorMessages } = require('../../constants');
 const { errors } = require('../../utils');
 
 module.exports = async (req, res) => {
