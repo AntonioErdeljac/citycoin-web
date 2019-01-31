@@ -3,14 +3,14 @@ const _ = require('lodash');
 const db = require('../../db');
 const { build } = require('../../utils');
 
-const { cookies } = require('../../../common/constants');
+const { cookies, paths } = require('../../../common/constants');
 
 module.exports = async (req, res, next) => {
   try {
     const token = _.get(req.cookies, cookies.AUTHENTICATION) || _.get(req, 'headers.authorization');
 
     if (!token) {
-      res.status(403).end();
+      return res.redirect(paths.client.LOGIN);
     }
 
     const user = await db.Users.getBySessionToken(token).lean();
@@ -21,6 +21,8 @@ module.exports = async (req, res, next) => {
       if (req.path.indexOf('/api/') === 0) {
         return res.status(401).end();
       }
+
+      return res.redirect(paths.client.LOGIN);
     }
 
     req.identity = { user };

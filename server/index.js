@@ -10,6 +10,9 @@ const { logger } = require('./utils');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', './client/pug');
+
 app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());

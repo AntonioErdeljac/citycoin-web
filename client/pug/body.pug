@@ -1,0 +1,15 @@
+body(class='cc-h-100')
+  div(id='root' class='cc-h-100')
+    h3.
+      Loading
+
+  script.
+     var cssLink = document.createElement('link');
+    cssLink.href = '/static/css/style.css';
+    cssLink.type = 'text/css';
+    cssLink.ref = 'stylesheet';
+    document.getElementsByTagName('head')[0].appendChild(cssLink);
+
+    var appScript = document.createElement('script');
+    appScript.src = '/static/js/app.js';
+    document.getElementsByTagName('head')[0].appendChild(appScript);
