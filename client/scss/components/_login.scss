@@ -1,0 +1,40 @@
+.cc-login-big {
+  background: url('/static/bg.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: #4E65F6;
+  border-bottom-right-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-family: 'Poppins-Medium';
+    color: white;
+    font-size: 60px;
+  }
+}
+
+.cc-login-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  i {
+    color: $color-primary;
+    font-size: 40px;
+    padding-bottom: 30px;
+    align-self: center !important;
+  }
+
+  h1 {
+    color: $color-primary;
+    font-size: 40px;
+    padding-bottom: 30px;
+    align-self: center !important;
+    font-family: 'Poppins';
+  }
+}

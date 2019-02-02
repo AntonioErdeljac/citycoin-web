@@ -1,0 +1,7 @@
+.cc-error {
+  border: solid 1px rgba(241, 59, 59, 0.447);
+
+  &:focus {
+    border: solid 1px rgba(241, 59, 59, 0.447) !important;
+  }
+}

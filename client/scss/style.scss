@@ -1,0 +1,33 @@
+$color-primary: #4E65F6;
+
+@import "~bootstrap/scss/bootstrap";
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&subset=latin-ext');
+
+@import "components/components";
+@import "helpers/helpers";
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p {
+  font-family: 'Poppins' !important;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+a {
+  text-decoration: none !important;
+
+  * {
+    &:hover {
+      opacity: 0.5 !important;
+      transition: 0.2s all !important;
+    }
+  }
+}
