@@ -15,11 +15,11 @@ import actions from '../../../actions';
 import { paths } from '../../../../../common/constants';
 import { _t } from '../../../../../common/i18n';
 
-class Login extends React.Component {
+class Register extends React.Component {
   handleSubmit = (values) => {
-    const { login } = this.props;
+    const { register } = this.props;
 
-    login(values);
+    register(values);
   };
 
   purgeForm = () => {
@@ -32,10 +32,6 @@ class Login extends React.Component {
     window.location = paths.client.LOGOUT;
   }
 
-  redirect = () => {
-    window.location = paths.client.DASHBOARD;
-  }
-
   render() {
     const { isSubmitting, hasFailedToSubmit, user } = this.props;
 
@@ -46,12 +42,33 @@ class Login extends React.Component {
         onSubmit={this.handleSubmit}
         render={formProps => (
           <div className="col-6 text-center cc-login-inner">
-            <h1>Prijava</h1>
+            <h1>Registracija</h1>
             <form autoComplete="off" onSubmit={formProps.handleSubmit}>
               <Input
                 {...formProps}
                 disabled={isSubmitting}
-                name="email"
+                name="personal.firstName"
+                placeholder="labels.firstName"
+                hasFailedToSubmit={hasFailedToSubmit}
+              />
+              <Input
+                {...formProps}
+                disabled={isSubmitting}
+                name="personal.lastName"
+                placeholder="labels.lastName"
+                hasFailedToSubmit={hasFailedToSubmit}
+              />
+              <Input
+                {...formProps}
+                disabled={isSubmitting}
+                name="personal.nin"
+                placeholder="labels.nin"
+                hasFailedToSubmit={hasFailedToSubmit}
+              />
+              <Input
+                {...formProps}
+                disabled={isSubmitting}
+                name="contact.email"
                 type="email"
                 placeholder="labels.email"
                 hasFailedToSubmit={hasFailedToSubmit}
@@ -59,13 +76,13 @@ class Login extends React.Component {
               <Input
                 {...formProps}
                 type="password"
-                name="password"
+                name="authentication.password"
                 disabled={isSubmitting}
                 placeholder="labels.password"
                 hasFailedToSubmit={hasFailedToSubmit}
               />
               <SubmitButton isSubmitting={isSubmitting} label="labels.submit" />
-              <Link to={paths.client.REGISTER} className="cc-text-button">{_t('labels.needAccount')}</Link>
+              <Link to={paths.client.LOGIN} className="cc-text-button">{_t('labels.haveAccount')}</Link>
             </form>
           </div>
         )}
@@ -77,7 +94,7 @@ class Login extends React.Component {
         <div className="col-6 cc-login-user cc-login-inner">
           <img src={user.personal.imageUrl || paths.api.v1.STATIC_USER_PLACEHOLDER} />
           <p>{user.personal.firstName} {user.personal.lastName}</p>
-          <SubmitButton onClick={this.redirect} label="labels.submit" />
+          <SubmitButton label="labels.submit" />
           <button onClick={this.logout} type="button" className="cc-text-button">{_t('labels.logout')}</button>
         </div>
       );
@@ -98,11 +115,11 @@ class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
+Register.propTypes = {
   clearAuthenticationState: PropTypes.func.isRequired,
   hasFailedToSubmit: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
   user: PropTypes.shape({}).isRequired,
 };
 
@@ -111,4 +128,4 @@ export default connect(
   {
     ...actions.authentication,
   },
-)(Login);
+)(Register);

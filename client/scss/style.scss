@@ -8,6 +8,10 @@ $color-primary: #4E65F6;
 @import "helpers/helpers";
 
 
+body {
+  background-color: #ecf0f1;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -15,10 +19,6 @@ a {
 
 p {
   font-family: 'Poppins' !important;
-}
-
-.form-control:focus {
-  box-shadow: none !important;
 }
 
 a {

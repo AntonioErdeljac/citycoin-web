@@ -11,4 +11,5 @@ module.exports.v1 = {
   USERS_ID: '/api/v1/users/:id',
   WALLETS_ID: '/api/v1/wallets/:id',
   CITIES: '/api/v1/cities',
+  STATIC_USER_PLACEHOLDER: '/static/user-placeholder.png',
 };

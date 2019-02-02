@@ -19,3 +19,19 @@
     transition: .2s all;
   }
 }
+
+.cc-text-button {
+  color: rgba(0,0,0,.6);
+  margin-top: 20px !important;
+  outline: none !important;
+  border-style: none;
+  font-size: 12px;
+  font-family: 'Poppins';
+  font-weight: 'Light' !important;
+  transition: 0.2s all !important;
+
+  &:hover {
+    opacity: 0.5 !important;
+    transition: 0.2s all !important;
+  }
+}

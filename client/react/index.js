@@ -24,9 +24,15 @@ window.onload = () => {
       <Router history={createBrowserHistory()}>
         <Route
           render={() => (
-            <Switch>
-              <Route path={paths.client.LOGIN} component={Authentication.Login} />
-            </Switch>
+            <React.Fragment>
+              <Switch>
+                <Route path={paths.client.LOGIN} component={Authentication.Login} />
+                <Route path={paths.client.REGISTER} component={Authentication.Register} />
+              </Switch>
+              <Switch>
+                <Route path={paths.client.DASHBOARD} component={() => <p>Dashboard</p>} />
+              </Switch>
+            </React.Fragment>
           )}
         />
       </Router>

@@ -13,7 +13,7 @@ const Input = ({ name, touched, errors, handleChange, placeholder, values, type,
       placeholder={_t(placeholder)}
       onChange={handleChange}
       value={get(values, name)}
-      className={cn('cc-input form-control form-control-lg', { 'cc-error': errors[name] && touched[name] })}
+      className={cn('cc-input form-control form-control-lg', { 'cc-error': get(errors, name) && get(touched, name) })}
       type={type}
     />
   </div>
