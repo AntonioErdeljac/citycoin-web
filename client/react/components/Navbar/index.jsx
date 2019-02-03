@@ -8,7 +8,7 @@ const Navbar = ({ children }) => {
 
   return (
     <React.Fragment>
-      <nav className="cc-navbar navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="cc-navbar cc-box-shadow navbar navbar-expand-lg navbar-light container">
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="cc-navbar-brand nav-item">
@@ -17,12 +17,10 @@ const Navbar = ({ children }) => {
             </li>
             <div className="cc-navbar-vertical-divider" />
             <li className="cc-navbar-regular-item nav-item">
-              <i className="fas fa-city mr-3" />
               Gradovi
             </li>
             <div className="cc-navbar-vertical-divider" />
             <li className="cc-navbar-regular-item nav-item">
-              <i className="fas fa-ticket-alt mr-3" />
               Usluge
             </li>
           </ul>
@@ -37,32 +35,6 @@ const Navbar = ({ children }) => {
           </ul>
         </div>
       </nav>
-      {/* <div className="cc-sidebar bg-light">
-        <div className="cc-sidebar-brand">
-          <img src="static/logo.png" />
-          CityCoin
-        </div>
-        <div className="cc-sidebar-item">
-          <div className="row cc-w-100">
-            <div className="col-5 text-right">
-              <i className="fas fa-city mr-3" />
-            </div>
-            <div className="col-7 text-left">
-              Gradovi
-            </div>
-          </div>
-        </div>
-        <div className="cc-sidebar-item">
-          <div className="row cc-w-100">
-            <div className="col-5 text-right">
-              <i className="fas fa-ticket-alt mr-3" />
-            </div>
-            <div className="col-7 text-left">
-              Usluge
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className="cc-content">
         {children}
       </div>

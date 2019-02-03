@@ -29,7 +29,7 @@ class Register extends React.Component {
   }
 
   logout = () => {
-    window.location = paths.client.LOGOUT;
+    window.location = paths.client.CITIES;
   }
 
   render() {

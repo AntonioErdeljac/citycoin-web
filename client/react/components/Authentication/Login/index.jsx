@@ -33,7 +33,7 @@ class Login extends React.Component {
   }
 
   redirect = () => {
-    window.location = paths.client.DASHBOARD;
+    window.location = paths.client.CITIES;
   }
 
   render() {

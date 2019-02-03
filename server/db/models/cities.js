@@ -19,6 +19,7 @@ const Cities = mongoose.model('cities', new Schema({
     countryCode: types.string({ required: true }),
     iata: types.string(),
   },
+  authorId: { ref: 'users', type: Schema.Types.ObjectId, required: true },
   services: [{ ref: 'services', type: Schema.Types.ObjectId }],
 }, { timestamps: true }));
 
@@ -37,9 +38,13 @@ module.exports.getById = (id) => {
 };
 
 module.exports.get = (options = {}) => {
-  const { longitude, latitude, keyword } = options;
+  const { longitude, latitude, keyword, authorId } = options;
 
   let query = {};
+
+  if (authorId) {
+    query.authorId = authorId;
+  }
 
   if (latitude && longitude) {
     const geoNearAggregation = [
