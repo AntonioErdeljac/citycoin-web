@@ -1,0 +1,49 @@
+.cc-sidebar {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 200px;
+
+  .cc-sidebar-brand {
+    height: 66.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: $color-primary;
+    font-family: 'Poppins';
+    font-size: 20px;
+    border-bottom: solid 1px rgba(0,0,0,.05);
+
+    img {
+      height: 20px;
+      width: 20px;
+      margin-right: 10px;
+    }
+  }
+
+  .cc-sidebar-item {
+    padding-top: 18px;
+    border-bottom: solid 1px rgba(0,0,0,.05);
+    padding-bottom: 18px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .2s all;
+    color: rgba(0,0,0,.55);
+
+    &:hover {
+      opacity: 0.8;
+      transition: .2s all;
+      background-color: rgba(0,0,0,.03);
+      color: $color-primary;
+      cursor: pointer;
+    }
+  }
+}

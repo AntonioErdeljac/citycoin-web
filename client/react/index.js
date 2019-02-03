@@ -8,7 +8,7 @@ import { createStore, applyMiddleware } from 'redux';
 
 import '../scss/style.scss';
 
-import { Authentication } from './components';
+import { Authentication, Navbar, Cities } from './components';
 import { reducers, middleware } from './store';
 
 import { setLocale } from '../../common/i18n';
@@ -28,9 +28,11 @@ window.onload = () => {
               <Switch>
                 <Route path={paths.client.LOGIN} component={Authentication.Login} />
                 <Route path={paths.client.REGISTER} component={Authentication.Register} />
-              </Switch>
-              <Switch>
-                <Route path={paths.client.DASHBOARD} component={() => <p>Dashboard</p>} />
+                <Navbar>
+                  <Switch>
+                    <Route path={paths.client.CITIES} component={Cities} />
+                  </Switch>
+                </Navbar>
               </Switch>
             </React.Fragment>
           )}
