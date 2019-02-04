@@ -36,6 +36,9 @@ const Navbar = ({ children }) => {
                 <div className="cc-navbar-item" href="#">{user.personal.firstName} {user.personal.lastName}</div>
                 <div className="cc-navbar-item-lower" href="#">Regular</div>
               </div>
+              <div className="cc-navbar-caret  ml-4">
+                <i className="fas fa-caret-down" />
+              </div>
             </li>
           </ul>
         </div>
