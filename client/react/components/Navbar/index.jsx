@@ -24,7 +24,9 @@ const Navbar = ({ children }) => {
             </li>
             <div className="cc-navbar-vertical-divider" />
             <li className="cc-navbar-regular-item nav-item">
-              Usluge
+              <Link to={paths.client.SERVICES}>
+                Usluge
+              </Link>
             </li>
           </ul>
           <ul className="navbar-nav ml-auto">
