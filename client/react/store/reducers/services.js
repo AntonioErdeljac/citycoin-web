@@ -1,9 +1,9 @@
 import { actions } from '../../../../common/constants';
 
 const initialState = {
-  isLoading: false,
-  hasFailedToLoad: false,
   data: [],
+  hasFailedToLoad: false,
+  isLoading: false,
 };
 
 const actionMap = {

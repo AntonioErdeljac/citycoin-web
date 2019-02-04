@@ -16,4 +16,8 @@ module.exports.labels = {
   status: 'Status',
   submit: 'Potvrdi',
   type: 'Vrsta',
+  subscriptionDescription: 'Opis pretplate',
+  subscriptionDuration: 'Trajanje pretplate',
+  subscriptionDurationUnit: 'Vremenska jedinica pretplate',
+  subscriptionPrice: 'Cijena pretplate',
 };

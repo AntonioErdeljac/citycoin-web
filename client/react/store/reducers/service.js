@@ -3,6 +3,8 @@ import { actions } from '../../../../common/constants';
 const initialState = {
   isSubmitting: false,
   hasFailedToSubmit: false,
+  isLoading: false,
+  hasFailedToLoad: false,
   data: {},
 };
 

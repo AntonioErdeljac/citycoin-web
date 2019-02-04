@@ -1,9 +1,11 @@
 import { actions } from '../../../../common/constants';
 
 const initialState = {
-  isSubmitting: false,
-  hasFailedToSubmit: false,
   data: {},
+  hasFailedToLoad: false,
+  hasFailedToSubmit: false,
+  isLoading: false,
+  isSubmitting: false,
 };
 
 const actionMap = {

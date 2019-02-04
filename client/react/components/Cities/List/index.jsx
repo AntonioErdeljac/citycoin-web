@@ -31,7 +31,7 @@ class CitiesList extends React.Component {
       content = (
         <div className="row px-0">
           {cities.map(city => (
-            <div className="col-4 px-0">
+            <div key={city._id} className="col-4 px-0">
               <div className="cc-card cc-box-shadow mr-3 mb-3">
                 <div className="d-flex cc-box-title">
                   <i className="fas fa-city" />

@@ -32,3 +32,25 @@ module.exports.getById = (id) => {
 
   return Services.findOne(query);
 };
+
+module.exports.get = (options = {}) => {
+  const { keyword, authorId } = options;
+
+  let query = {};
+
+  if (authorId) {
+    query.authorId = authorId;
+  }
+
+  if (keyword) {
+    query = {
+      'general.name': new RegExp(_.escapeRegExp(_.trim(keyword)), 'i'),
+    };
+  }
+
+  return Promise.all([
+    Services.find(query),
+    Services.count(query),
+  ])
+    .then(([data, total]) => Promise.resolve({ data, total }));
+};

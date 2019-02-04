@@ -84,6 +84,7 @@ class CitiesForm extends React.Component {
                 </div>
               </div>
               <div className="cc-content-form cc-h-100">
+                <h1>Osnovno</h1>
                 <div className="row">
                   <Input
                     className="col-6"
@@ -96,13 +97,22 @@ class CitiesForm extends React.Component {
                   <Input
                     className="col-6"
                     {...formProps}
+                    name="general.status"
+                    disabled={isSubmitting}
+                    placeholder="labels.status"
+                    hasFailedToSubmit={hasFailedToSubmit}
+                  />
+                </div>
+                <h1>Informacije</h1>
+                <div className="row">
+                  <Input
+                    className="col-6"
+                    {...formProps}
                     name="info.iata"
                     disabled={isSubmitting}
                     placeholder="labels.iata"
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
-                </div>
-                <div className="row mt-3">
                   <Input
                     className="col-6"
                     {...formProps}
@@ -111,15 +121,8 @@ class CitiesForm extends React.Component {
                     placeholder="labels.countryCode"
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
-                  <Input
-                    className="col-6"
-                    {...formProps}
-                    name="general.status"
-                    disabled={isSubmitting}
-                    placeholder="labels.status"
-                    hasFailedToSubmit={hasFailedToSubmit}
-                  />
                 </div>
+                <h1>Ostalo</h1>
                 <div className="row mt-3">
                   <Input
                     className="col-6"

@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
+import uniqid from 'uniqid';
 import { Formik, withFormik } from 'formik';
+import { connect } from 'react-redux';
 import { isEmpty, get } from 'lodash';
 
 import schema from './schema';
 import selectors from './selectors';
 
-import { SubmitButton, Input } from '../../common/components';
+import { SubmitButton, Input, Button } from '../../common/components';
 
 import actions from '../../../actions';
 
@@ -18,6 +19,7 @@ class ServicesForm extends React.Component {
     this.state = {
       isNewService: true,
       serviceId: undefined,
+      subscriptions: [{}],
     };
   }
 
@@ -62,7 +64,7 @@ class ServicesForm extends React.Component {
 
   render() {
     const { isSubmitting, hasFailedToSubmit, service, isLoading, hasFailedToLoad } = this.props;
-    const { isNewService } = this.state;
+    const { isNewService, subscriptions } = this.state;
 
     let content = <p>Loading...</p>;
 
@@ -84,6 +86,7 @@ class ServicesForm extends React.Component {
                 </div>
               </div>
               <div className="cc-content-form cc-h-100">
+                <h1>Osnovno</h1>
                 <div className="row">
                   <Input
                     className="col-6"
@@ -93,6 +96,9 @@ class ServicesForm extends React.Component {
                     placeholder="labels.name"
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
+                </div>
+                <h1>Tvrtka</h1>
+                <div className="row mt-3">
                   <Input
                     className="col-6"
                     {...formProps}
@@ -101,8 +107,6 @@ class ServicesForm extends React.Component {
                     placeholder="labels.companyName"
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
-                </div>
-                <div className="row mt-3">
                   <Input
                     className="col-6"
                     {...formProps}
@@ -111,6 +115,9 @@ class ServicesForm extends React.Component {
                     placeholder="labels.companyNin"
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
+                </div>
+                <h1>Ostalo</h1>
+                <div className="row mt-3">
                   <Input
                     className="col-6"
                     {...formProps}
@@ -120,15 +127,50 @@ class ServicesForm extends React.Component {
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
                 </div>
+                <h1>Pretplate</h1>
                 <div className="row mt-3">
-                  <Input
-                    className="col-6"
-                    {...formProps}
-                    name="services"
-                    disabled={isSubmitting}
-                    placeholder="labels.service"
-                    hasFailedToSubmit={hasFailedToSubmit}
-                  />
+                  {subscriptions.map((subscription, index) => (
+                    <React.Fragment key={uniqid()}>
+                      <Input
+                        className="col-6"
+                        {...formProps}
+                        name={`subscriptions[${index}].description`}
+                        disabled={isSubmitting}
+                        placeholder="labels.subscriptionDescription"
+                        hasFailedToSubmit={hasFailedToSubmit}
+                      />
+                      <Input
+                        className="col-6"
+                        {...formProps}
+                        name={`subscriptions[${index}].price`}
+                        disabled={isSubmitting}
+                        placeholder="labels.subscriptionPrice"
+                        hasFailedToSubmit={hasFailedToSubmit}
+                      />
+                      <Input
+                        className="col-6"
+                        {...formProps}
+                        name={`subscriptions[${index}].duration`}
+                        disabled={isSubmitting}
+                        placeholder="labels.subscriptionDuration"
+                        hasFailedToSubmit={hasFailedToSubmit}
+                      />
+                      <Input
+                        className="col-6"
+                        {...formProps}
+                        name={`subscriptions[${index}].durationUnit`}
+                        disabled={isSubmitting}
+                        placeholder="labels.subscriptionDurationUnit"
+                        hasFailedToSubmit={hasFailedToSubmit}
+                      />
+                      <div className="cc-form-divider" />
+                    </React.Fragment>
+                  ))}
+                </div>
+                <div className="row">
+                  <div className="col-4">
+                    <Button type="button" label="Dodaj pretplatu" onClick={() => this.setState({ subscriptions: subscriptions.concat({}) })} />
+                  </div>
                 </div>
               </div>
             </form>
