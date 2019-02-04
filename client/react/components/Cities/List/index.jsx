@@ -32,7 +32,7 @@ class CitiesList extends React.Component {
         <div className="row px-0">
           {cities.map(city => (
             <div className="col-4 px-0">
-              <div className="cc-card cc-box-shadow mx-3">
+              <div className="cc-card cc-box-shadow mr-3 mb-3">
                 <div className="d-flex cc-box-title">
                   <i className="fas fa-city" />
                   <h1>{city.general.name}</h1>

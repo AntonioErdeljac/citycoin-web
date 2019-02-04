@@ -18,8 +18,6 @@ const validations = Yup.object().shape({
       .required('Required'),
   }),
   info: Yup.object().shape({
-    iata: Yup.string()
-      .required('Required'),
     countryCode: Yup.string()
       .required('Required'),
   }),
