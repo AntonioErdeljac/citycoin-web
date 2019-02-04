@@ -33,6 +33,7 @@ window.onload = () => {
                     <Route path={paths.client.CITIES_NEW} component={Cities.Form} />
                     <Route path={paths.client.CITIES_ID} component={Cities.Form} />
                     <Route path={paths.client.CITIES} component={Cities.List} />
+                    <Route path={paths.client.BASE} component={Cities.List} />
                   </Switch>
                 </Navbar>
               </Switch>

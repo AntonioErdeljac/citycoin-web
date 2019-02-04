@@ -33,7 +33,7 @@ class CitiesForm extends React.Component {
     const { match: { params: { id } }, getCity } = this.props;
     const newId = get(nextProps, 'match.params.id');
 
-    if (newId !== id) {
+    if (newId !== id && newId) {
       getCity(newId);
     }
 
