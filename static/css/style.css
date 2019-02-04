@@ -6927,8 +6927,9 @@ a.text-dark:hover, a.text-dark:focus {
   border-radius: 5px;
   background-color: #4E65F6;
   font-family: 'Poppins';
-  font-weight: 'Light';
+  font-weight: 400 !important;
   font-size: 15px;
+  padding: 10px !important;
   color: white;
   transition: .2s all;
   border-style: none; }
@@ -7021,8 +7022,9 @@ a.text-dark:hover, a.text-dark:focus {
 
 .cc-navbar {
   border-radius: 10px;
-  margin-top: 10px;
-  background-color: white; }
+  margin-top: 20px;
+  background-color: white !important;
+  padding: 20px !important; }
   .cc-navbar .cc-navbar-action {
     background-color: #4E65F6; }
   .cc-navbar .cc-navbar-brand {
@@ -7147,6 +7149,17 @@ a.text-dark:hover, a.text-dark:focus {
       color: #4E65F6; }
   .cc-content .cc-content-inner .cc-content-list {
     margin-top: 20px; }
+  .cc-content .cc-content-inner .cc-content-form {
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 20px; }
+    .cc-content .cc-content-inner .cc-content-form .cc-form-divider {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.1);
+      margin-top: 15px;
+      margin-bottom: 15px; }
   .cc-content .cc-content-inner .cc-content-title {
     display: flex;
     justify-content: center;
@@ -7155,14 +7168,24 @@ a.text-dark:hover, a.text-dark:focus {
     border-radius: 10px;
     background-color: white; }
     .cc-content .cc-content-inner .cc-content-title i {
-      font-size: 20px;
+      font-size: 15px;
       color: #4E65F6;
       margin-right: 15px; }
     .cc-content .cc-content-inner .cc-content-title h1 {
       color: #4E65F6;
-      font-size: 20px;
+      font-size: 15px;
       font-family: 'Poppins';
+      font-weight: 500 !important;
       margin: 0 !important; }
+
+.cc-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .cc-empty p {
+    font-family: 'Poppins' !important;
+    font-size: 25px;
+    color: rgba(0, 0, 0, 0.3); }
 
 .cc-h-100 {
   height: 100%; }

@@ -3,6 +3,9 @@ const keyMirror = require('keymirror');
 module.exports = keyMirror({
   API_CALL: null,
 
+  CITY_UPDATE_REQUEST: null,
+  CITY_UPDATE_SUCCESS: null,
+  CITY_UPDATE_FAILURE: null,
   AUTHENTICATION_DATA_RESET: null,
   AUTHENTICATION_LOGIN_FAILURE: null,
   AUTHENTICATION_LOGIN_REQUEST: null,
@@ -14,4 +17,11 @@ module.exports = keyMirror({
   CITIES_GET_FAILURE: null,
   CITIES_GET_REQUEST: null,
   CITIES_GET_SUCCESS: null,
+  CITY_CREATE_FAILURE: null,
+  CITY_CREATE_REQUEST: null,
+  CITY_CREATE_SUCCESS: null,
+  CITY_DATA_RESET: null,
+  CITY_GET_FAILURE: null,
+  CITY_GET_REQUEST: null,
+  CITY_GET_SUCCESS: null,
 });

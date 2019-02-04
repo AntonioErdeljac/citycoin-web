@@ -5,8 +5,8 @@ import { get } from 'lodash';
 
 import { _t } from '../../../../../common/i18n';
 
-const Input = ({ name, touched, errors, handleChange, placeholder, values, type, disabled }) => (
-  <div className="form-group">
+const Input = ({ name, touched, errors, handleChange, placeholder, values, type, disabled, className }) => (
+  <div className={cn('form-group', { [className]: !!className })}>
     <input
       disabled={disabled}
       name={name}
@@ -21,10 +21,12 @@ const Input = ({ name, touched, errors, handleChange, placeholder, values, type,
 Input.defaultProps = {
   type: 'text',
   disabled: false,
+  className: undefined,
 };
 
 Input.propTypes = {
   disabled: PropTypes.bool,
+  className: PropTypes.string,
   type: PropTypes.string,
   touched: PropTypes.shape({}).isRequired,
   errors: PropTypes.shape({}).isRequired,

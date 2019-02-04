@@ -2,8 +2,9 @@
 
 .cc-navbar {
   border-radius: 10px;
-  margin-top: 10px;
-  background-color: white;
+  margin-top: 20px;
+  background-color: white !important;
+  padding: 20px !important;
 
   .cc-navbar-action {
     background-color: $color-primary;

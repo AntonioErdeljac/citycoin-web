@@ -30,6 +30,8 @@ window.onload = () => {
                 <Route path={paths.client.REGISTER} component={Authentication.Register} />
                 <Navbar>
                   <Switch>
+                    <Route path={paths.client.CITIES_NEW} component={Cities.Form} />
+                    <Route path={paths.client.CITIES_ID} component={Cities.Form} />
                     <Route path={paths.client.CITIES} component={Cities.List} />
                   </Switch>
                 </Navbar>

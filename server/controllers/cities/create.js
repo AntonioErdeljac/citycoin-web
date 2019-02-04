@@ -7,11 +7,11 @@ module.exports = async (req, res) => {
     const { user } = req.identity;
 
     if (!req.body) {
-      return res.status(400).json({ message: errorMessages.SERVICES_400 }).end();
+      return res.status(400).json({ message: errorMessages.CITIES_400 }).end();
     }
 
     if (!db.Cities.isValid(req.body)) {
-      return res.status(400).json({ message: errorMessages.SERVICES_400 }).end();
+      return res.status(400).json({ message: errorMessages.CITIES_400 }).end();
     }
 
     const updatedCity = {

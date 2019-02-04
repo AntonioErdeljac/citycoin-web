@@ -1,6 +1,7 @@
 .cc-content {
   margin-top: 20px;
 
+
   .cc-card {
     border-radius: 10px;
     background-color: white;
@@ -51,6 +52,22 @@
     .cc-content-list {
       margin-top: 20px;
     }
+
+    .cc-content-form {
+      background-color: white;
+      border-radius: 10px;
+      margin-top: 20px;
+      padding: 20px;
+
+      .cc-form-divider {
+        width: 100%;
+        height: 1px;
+        background-color: rgba(0,0,0,.1);
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+    }
+
     .cc-content-title {
       display: flex;
       justify-content: center;
@@ -60,15 +77,16 @@
       background-color: white;
 
       i {
-        font-size: 20px;
+        font-size: 15px;
         color: $color-primary;
         margin-right: 15px;
       }
 
       h1 {
         color: $color-primary;
-        font-size: 20px;
+        font-size: 15px;
         font-family: 'Poppins';
+        font-weight: 500 !important;
         margin: 0 !important;
       }
     }

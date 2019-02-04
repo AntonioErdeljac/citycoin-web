@@ -3,23 +3,24 @@ const mongoose = require('mongoose');
 
 const types = require('./types');
 
-const { locationTypes } = require('../../../common/constants');
+const { locationTypes, statusTypes } = require('../../../common/constants');
 
 const { Schema } = mongoose;
 
 const Cities = mongoose.model('cities', new Schema({
   general: {
     name: types.string({ required: true }),
+    status: types.string({ enum: _.keys(statusTypes), default: statusTypes.DRAFT }),
   },
   location: {
-    type: types.string({ default: locationTypes.POINT, required: true, enum: _.keys(locationTypes) }),
+    type: types.string({ default: locationTypes.POINT, enum: _.keys(locationTypes) }),
     coordinates: { type: [types.number()], index: '2dsphere' },
   },
   info: {
     countryCode: types.string({ required: true }),
     iata: types.string(),
   },
-  authorId: { ref: 'users', type: Schema.Types.ObjectId, required: true },
+  authorId: { ref: 'users', type: Schema.Types.ObjectId },
   services: [{ ref: 'services', type: Schema.Types.ObjectId }],
 }, { timestamps: true }));
 
@@ -31,10 +32,27 @@ module.exports.create = (values) => {
   return Cities(city).save();
 };
 
-module.exports.getById = (id) => {
+module.exports.getById = (id, options = {}) => {
+  const { authorId } = options;
+
   const query = { _id: id };
 
+  if (authorId) {
+    query.authorId = authorId;
+  }
+
   return Cities.findOne(query);
+};
+
+module.exports.updateById = (id, values) => {
+  const city = _.omit(values, ['_id']);
+
+  const query = {
+    _id: id,
+    authorId: city.authorId,
+  };
+
+  return Cities.findOneAndUpdate(query, { $set: city }, { new: true });
 };
 
 module.exports.get = (options = {}) => {

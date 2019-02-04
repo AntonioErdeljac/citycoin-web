@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { paths } from '../../../../common/constants';
 
@@ -12,12 +13,14 @@ const Navbar = ({ children }) => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="cc-navbar-brand nav-item">
-              <img src="static/logo.png" />
+              <img src="http://localhost:3000/static/logo.png" />
               CityCoin
             </li>
             <div className="cc-navbar-vertical-divider" />
             <li className="cc-navbar-regular-item nav-item">
-              Gradovi
+              <Link to={paths.client.CITIES}>
+                Gradovi
+              </Link>
             </li>
             <div className="cc-navbar-vertical-divider" />
             <li className="cc-navbar-regular-item nav-item">
@@ -35,7 +38,7 @@ const Navbar = ({ children }) => {
           </ul>
         </div>
       </nav>
-      <div className="cc-content">
+      <div className="cc-content cc-h-100">
         {children}
       </div>
     </React.Fragment>

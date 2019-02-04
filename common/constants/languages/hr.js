@@ -8,4 +8,9 @@ module.exports.labels = {
   nin: 'OIB',
   password: 'Lozinka',
   submit: 'Potvrdi',
+  iata: 'IATA',
+  countryCode: 'Kod države',
+  name: 'Naziv',
+  status: 'Status',
+  service: 'Usluga',
 };

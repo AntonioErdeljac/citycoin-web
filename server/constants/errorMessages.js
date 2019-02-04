@@ -1,4 +1,5 @@
 module.exports = {
+  CITIES_400: 'Invalid city data',
   CITIES_404: 'City does not exist',
   LOGIN_400: 'Invalid login data',
   SERVICES_400: 'Invalid service data',
