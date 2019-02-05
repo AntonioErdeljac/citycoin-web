@@ -1,17 +1,37 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Formik, withFormik, FieldArray } from 'formik';
+import { Formik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
+import posed, { PoseGroup } from 'react-pose';
 import { isEmpty, get } from 'lodash';
 
 import schema from './schema';
 import selectors from './selectors';
 
-import { SubmitButton, Input, Button, Select } from '../../common/components';
+import { SubmitButton, Input, Button, Select, Loading } from '../../common/components';
 
 import actions from '../../../actions';
 
 import { servicesIcons } from '../../../../../common/constants';
+
+const Box = posed.div({
+  enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 50) },
+  exit: { opacity: 0, y: '-100%' },
+});
+
+const FormBox = posed.div({
+  visible: { opacity: 1, y: '0%', delay: 300 },
+  hidden: { opacity: 0, y: '-20%' },
+});
+
+const Title = posed.div({
+  visible: {
+    opacity: 1,
+    y: '0%',
+    delay: 200,
+  },
+  hidden: { opacity: 0, y: '-100%' },
+});
 
 class ServicesForm extends React.Component {
   constructor() {
@@ -20,6 +40,7 @@ class ServicesForm extends React.Component {
     this.state = {
       isNewService: true,
       serviceId: undefined,
+      hasFormLoaded: false,
     };
   }
 
@@ -29,11 +50,27 @@ class ServicesForm extends React.Component {
     if (id) {
       getService(id);
     }
+
+    this.setState({
+      hasFormLoaded: true,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { match: { params: { id } }, getService } = this.props;
+    const { match: { params: { id } }, getService, isLoading } = this.props;
     const newId = get(nextProps, 'match.params.id');
+
+    if (nextProps.isLoading) {
+      this.setState({
+        hasFormLoaded: false,
+      });
+    }
+
+    if ((!nextProps.isLoading && !nextProps.hasFailedToLoad) && (isLoading || !id)) {
+      this.setState({
+        hasFormLoaded: true,
+      });
+    }
 
     if (newId !== id && newId) {
       getService(newId);
@@ -64,9 +101,9 @@ class ServicesForm extends React.Component {
 
   render() {
     const { isSubmitting, hasFailedToSubmit, service, isLoading, hasFailedToLoad, servicesTypesOptions, subscriptionsDurationUnitTypesOptions } = this.props;
-    const { isNewService } = this.state;
+    const { isNewService, hasFormLoaded } = this.state;
 
-    let content = <p>Loading...</p>;
+    let content = <Loading />;
 
     if (!hasFailedToLoad && !isLoading) {
       content = (
@@ -76,7 +113,7 @@ class ServicesForm extends React.Component {
           onSubmit={this.handleSubmit}
           render={formProps => (
             <form autoComplete="off" onSubmit={formProps.handleSubmit}>
-              <div className="cc-content-title justify-content-between cc-box-shadow">
+              <Title initialPose="hidden" pose={hasFormLoaded ? 'visible' : 'hidden'} className="cc-content-title justify-content-between cc-box-shadow">
                 <div className="d-flex">
                   <i className={`fas fa-${servicesIcons[service.type] ? servicesIcons[service.type].icon : 'ticket-alt'}`} />
                   <h1>{isEmpty(service) ? 'Nova usluga' : service.general.name}</h1>
@@ -84,8 +121,8 @@ class ServicesForm extends React.Component {
                 <div>
                   <SubmitButton label={isNewService ? 'Spremi' : 'Uredi'} />
                 </div>
-              </div>
-              <div className="cc-content-form cc-h-100">
+              </Title>
+              <FormBox pose={hasFormLoaded ? 'visible' : 'hidden'} initialPose="hidden" className="cc-content-form cc-h-100">
                 <h1>Osnovno</h1>
                 <div className="row">
                   <Input
@@ -129,66 +166,72 @@ class ServicesForm extends React.Component {
                   />
                 </div>
                 <h1>Pretplate</h1>
-                <div className="row mt-3">
+                <div className="mt-3">
                   <FieldArray
                     name="subscriptions"
                     render={arrayHelpers => (
                       <React.Fragment>
-                        {formProps.values.subscriptions.map((subscription, index) => (
-                          <React.Fragment key={index}>
-                            <Input
-                              className="col-6"
-                              {...formProps}
-                              name={`subscriptions[${index}].description`}
-                              disabled={isSubmitting}
-                              placeholder="labels.subscriptionDescription"
-                              hasFailedToSubmit={hasFailedToSubmit}
+                        <PoseGroup animateOnMount={false}>
+                          {formProps.values.subscriptions.map((subscription, index) => (
+                            <Box className="row" key={index} i={index}>
+                              <React.Fragment>
+                                <Input
+                                  className="col-6"
+                                  {...formProps}
+                                  name={`subscriptions[${index}].description`}
+                                  disabled={isSubmitting}
+                                  placeholder="labels.subscriptionDescription"
+                                  hasFailedToSubmit={hasFailedToSubmit}
+                                />
+                                <Input
+                                  className="col-6"
+                                  {...formProps}
+                                  name={`subscriptions[${index}].price`}
+                                  disabled={isSubmitting}
+                                  placeholder="labels.subscriptionPrice"
+                                  hasFailedToSubmit={hasFailedToSubmit}
+                                />
+                                <Input
+                                  className="col-6"
+                                  {...formProps}
+                                  name={`subscriptions[${index}].duration`}
+                                  disabled={isSubmitting}
+                                  placeholder="labels.subscriptionDuration"
+                                  hasFailedToSubmit={hasFailedToSubmit}
+                                />
+                                <Select
+                                  options={subscriptionsDurationUnitTypesOptions}
+                                  className="col-6"
+                                  {...formProps}
+                                  name={`subscriptions[${index}].durationUnit`}
+                                  disabled={isSubmitting}
+                                  placeholder="labels.subscriptionDurationUnit"
+                                  hasFailedToSubmit={hasFailedToSubmit}
+                                />
+                                {index + 1 !== formProps.values.subscriptions.length && <div className="cc-form-divider" />}
+                              </React.Fragment>
+                            </Box>
+                          ))}
+                        </PoseGroup>
+                        <div className="row">
+                          <div className="col-4 mt-3">
+                            <Button
+                              type="button"
+                              label="Dodaj pretplatu"
+                              onClick={() => arrayHelpers.push({
+                                description: '',
+                                duration: '',
+                                durationUnit: '',
+                                price: '',
+                              })}
                             />
-                            <Input
-                              className="col-6"
-                              {...formProps}
-                              name={`subscriptions[${index}].price`}
-                              disabled={isSubmitting}
-                              placeholder="labels.subscriptionPrice"
-                              hasFailedToSubmit={hasFailedToSubmit}
-                            />
-                            <Input
-                              className="col-6"
-                              {...formProps}
-                              name={`subscriptions[${index}].duration`}
-                              disabled={isSubmitting}
-                              placeholder="labels.subscriptionDuration"
-                              hasFailedToSubmit={hasFailedToSubmit}
-                            />
-                            <Select
-                              options={subscriptionsDurationUnitTypesOptions}
-                              className="col-6"
-                              {...formProps}
-                              name={`subscriptions[${index}].durationUnit`}
-                              disabled={isSubmitting}
-                              placeholder="labels.subscriptionDurationUnit"
-                              hasFailedToSubmit={hasFailedToSubmit}
-                            />
-                            {index + 1 !== formProps.values.subscriptions.length && <div className="cc-form-divider" />}
-                          </React.Fragment>
-                        ))}
-                        <div className="col-4 mt-3">
-                          <Button
-                            type="button"
-                            label="Dodaj pretplatu"
-                            onClick={() => arrayHelpers.push({
-                              description: '',
-                              duration: '',
-                              durationUnit: '',
-                              price: '',
-                            })}
-                          />
+                          </div>
                         </div>
                       </React.Fragment>
                     )}
                   />
                 </div>
-              </div>
+              </FormBox>
             </form>
           )}
         />
@@ -229,4 +272,4 @@ export default connect(
   {
     ...actions.service,
   },
-)(withFormik({ enableReinitialize: true })(ServicesForm));
+)(ServicesForm);

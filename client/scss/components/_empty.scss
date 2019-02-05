@@ -2,10 +2,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  margin-top: 40px;
+
+  i {
+    font-size: 80px;
+    color: rgba(0,0,0,.3);
+    margin-bottom: 15px;
+  }
 
   p {
     font-family: 'Poppins' !important;
-    font-size: 25px;
+    font-weight: 400 !important;
+    font-size: 40px;
     color: rgba(0,0,0,.3);
   }
 }

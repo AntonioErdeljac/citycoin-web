@@ -2,18 +2,38 @@ import Geosuggest from 'react-geosuggest';
 import PropTypes from 'prop-types';
 import React from 'react';
 import cn from 'classnames';
-import { Formik, withFormik, FieldArray } from 'formik';
+import { Formik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
 import { isEmpty, get } from 'lodash';
+import posed, { PoseGroup } from 'react-pose';
 
 import schema from './schema';
 import selectors from './selectors';
 
-import { SubmitButton, Input, Select, Button } from '../../common/components';
+import { SubmitButton, Input, Select, Button, Loading } from '../../common/components';
 
 import actions from '../../../actions';
 
 import { _t } from '../../../../../common/i18n';
+
+const Box = posed.div({
+  enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 50) },
+  exit: { opacity: 0, y: '-100%' },
+});
+
+const FormBox = posed.div({
+  visible: { opacity: 1, y: '0%', delay: 300 },
+  hidden: { opacity: 0, y: '-20%' },
+});
+
+const Title = posed.div({
+  visible: {
+    opacity: 1,
+    y: '0%',
+    delay: 200,
+  },
+  hidden: { opacity: 0, y: '-100%' },
+});
 
 class CitiesForm extends React.Component {
   constructor() {
@@ -22,6 +42,7 @@ class CitiesForm extends React.Component {
     this.state = {
       isNewCity: true,
       cityId: undefined,
+      hasFormLoaded: false,
     };
   }
 
@@ -36,8 +57,20 @@ class CitiesForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { match: { params: { id } }, getCity } = this.props;
+    const { match: { params: { id } }, getCity, isLoading } = this.props;
     const newId = get(nextProps, 'match.params.id');
+
+    if (nextProps.isLoading) {
+      this.setState({
+        hasFormLoaded: false,
+      });
+    }
+
+    if ((!nextProps.isLoading && !nextProps.hasFailedToLoad) && (isLoading || !id)) {
+      this.setState({
+        hasFormLoaded: true,
+      });
+    }
 
     if (newId !== id && newId) {
       getCity(newId);
@@ -69,9 +102,9 @@ class CitiesForm extends React.Component {
 
   render() {
     const { isSubmitting, hasFailedToSubmit, city, isLoading, hasFailedToLoad, countryCodeOptions, servicesOptions } = this.props;
-    const { isNewCity } = this.state;
+    const { isNewCity, hasFormLoaded } = this.state;
 
-    let content = <p>Loading...</p>;
+    let content = <Loading />;
 
     if (!hasFailedToLoad && !isLoading) {
       content = (
@@ -81,16 +114,16 @@ class CitiesForm extends React.Component {
           onSubmit={this.handleSubmit}
           render={formProps => (
             <form autoComplete="off" onSubmit={formProps.handleSubmit}>
-              <div className="cc-content-title justify-content-between cc-box-shadow">
+              <Title pose={hasFormLoaded ? 'visible' : 'hidden'} initialPose="hidden" className="cc-content-title justify-content-between cc-box-shadow">
                 <div className="d-flex">
                   <i className="fas fa-city" />
                   <h1>{isEmpty(city) ? 'Novi Grad' : city.general.name}</h1>
                 </div>
                 <div>
-                  <SubmitButton label={isNewCity ? 'Spremi' : 'Uredi'} />
+                  <SubmitButton disabled={isSubmitting} label={isNewCity ? 'Spremi' : 'Uredi'} />
                 </div>
-              </div>
-              <div className="cc-content-form cc-h-100">
+              </Title>
+              <FormBox initialPose="hidden" pose={hasFormLoaded ? 'visible' : 'hidden'} className="cc-content-form cc-h-100 mb-3">
                 <h1>Osnovno</h1>
                 <div className="row">
                   <Input
@@ -105,6 +138,8 @@ class CitiesForm extends React.Component {
                 <h1>Lokacija</h1>
                 <div className="row">
                   <Geosuggest
+                    disabled={isSubmitting}
+                    initialValue={get(formProps.values, 'general.name')}
                     className="col-6"
                     inputClassName={cn('form-control form-control-lg', { 'cc-error': get(formProps.errors, 'location.coordinates') && get(formProps.touched, 'location.coordinates') })}
                     onSuggestSelect={(value) => {
@@ -143,20 +178,23 @@ class CitiesForm extends React.Component {
                     name="services"
                     render={arrayHelpers => (
                       <React.Fragment>
-                        {formProps.values.services.map((service, index) => (
-                          <Select
-                            key={index}
-                            options={servicesOptions}
-                            className="col-12"
-                            {...formProps}
-                            name={`services[${index}]`}
-                            disabled={isSubmitting}
-                            placeholder="labels.service"
-                            hasFailedToSubmit={hasFailedToSubmit}
-                          />
-                        ))}
+                        <PoseGroup>
+                          {formProps.values.services.map((service, index) => (
+                            <Box i={index} key={index} initialPose="hidden" className="col-12">
+                              <Select
+                                options={servicesOptions}
+                                {...formProps}
+                                name={`services[${index}]`}
+                                disabled={isSubmitting}
+                                placeholder="labels.service"
+                                hasFailedToSubmit={hasFailedToSubmit}
+                              />
+                            </Box>
+                          ))}
+                        </PoseGroup>
                         <div className="col-4 mt-3">
                           <Button
+                            disabled={isSubmitting}
                             type="button"
                             label="Dodaj uslugu"
                             onClick={() => arrayHelpers.push(undefined)}
@@ -166,7 +204,7 @@ class CitiesForm extends React.Component {
                     )}
                   />
                 </div>
-              </div>
+              </FormBox>
             </form>
           )}
         />
@@ -210,4 +248,4 @@ export default connect(
     ...actions.city,
     ...actions.services,
   },
-)(withFormik({ enableReinitialize: true })(CitiesForm));
+)(CitiesForm);

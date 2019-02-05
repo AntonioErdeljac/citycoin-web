@@ -10,9 +10,9 @@ const initialValues = values => ({
     countryCode: get(values, 'info.countryCode', undefined),
   },
   location: {
-    coordinates: undefined,
+    coordinates: get(values, 'location.coordiantes', undefined),
   },
-  services: [undefined],
+  services: get(values, 'services', [undefined]),
 });
 
 const validations = Yup.object().shape({

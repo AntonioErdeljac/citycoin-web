@@ -1,27 +1,61 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import posed, { PoseGroup } from 'react-pose';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
-import { Link } from 'react-router-dom';
 
 import selectors from './selectors';
 
-import { SubmitButton, Empty } from '../../common/components';
+import { SubmitButton, Empty, Loading } from '../../common/components';
 
 import actions from '../../../actions';
 import { paths } from '../../../../../common/constants';
 
+const Box = posed.div({
+  enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 100) + 200 },
+  exit: { opacity: 0, y: '-100%' },
+});
+
+const Title = posed.div({
+  visible: {
+    y: '0%',
+    opacity: 1,
+    delay: 200,
+  },
+  hidden: { opacity: 0, y: '-100%' },
+});
+
 class CitiesList extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      hasMounted: false,
+    };
+  }
+
   componentDidMount() {
     const { getCities } = this.props;
 
     getCities({ isBusiness: true });
+
+    this.setState({
+      hasMounted: true,
+    });
+  }
+
+  componentWillUnmount() {
+    const { clearCitiesState } = this.props;
+
+    clearCitiesState();
   }
 
   render() {
     const { isLoading, hasFailedToLoad, cities } = this.props;
+    const { hasMounted } = this.state;
 
-    let content = <p>Loading...</p>;
+    let content = <Loading />;
 
     if (!hasFailedToLoad && !isLoading && isEmpty(cities)) {
       content = <Empty />;
@@ -30,27 +64,29 @@ class CitiesList extends React.Component {
     if (!hasFailedToLoad && !isLoading && !isEmpty(cities)) {
       content = (
         <div className="row px-0">
-          {cities.map(city => (
-            <div key={city._id} className="col-4 px-0">
-              <div className="cc-card cc-box-shadow mr-3 mb-3">
-                <div className="d-flex cc-box-title">
-                  <i className="fas fa-city" />
-                  <h1>{city.general.name}</h1>
-                </div>
-                <div className="cc-card-divider" />
-                <div className="d-flex">
-                  <div className="d-flex cc-card-service">
-                    <i className="fas fa-ticket-alt" />
-                    <h1>{city.services.length} Usluga</h1>
+          <PoseGroup>
+            {cities.map((city, i) => (
+              <Box i={i} initialPose="exit" preEnterPose="exit" key={city._id} className="col-4 px-0">
+                <div className="cc-card cc-box-shadow mr-3 mb-3">
+                  <div className="d-flex cc-box-title">
+                    <i className="fas fa-city" />
+                    <h1>{city.general.name}</h1>
                   </div>
+                  <div className="cc-card-divider" />
+                  <div className="d-flex">
+                    <div className="d-flex cc-card-service">
+                      <i className="fas fa-ticket-alt" />
+                      <h1>{city.services.length} Usluga</h1>
+                    </div>
+                  </div>
+                  <div className="cc-card-divider" />
+                  <Link to={paths.build(paths.client.CITIES_ID, city._id)}>
+                    <SubmitButton label="Uredi" />
+                  </Link>
                 </div>
-                <div className="cc-card-divider" />
-                <Link to={paths.build(paths.client.CITIES_ID, city._id)}>
-                  <SubmitButton label="Uredi" />
-                </Link>
-              </div>
-            </div>
-          ))}
+              </Box>
+            ))}
+          </PoseGroup>
         </div>
       );
     }
@@ -58,7 +94,7 @@ class CitiesList extends React.Component {
     return (
       <React.Fragment>
         <div className="container cc-h-100 cc-content-inner px-0">
-          <div className="cc-content-title justify-content-between cc-box-shadow">
+          <Title pose={hasMounted ? 'visible' : 'hidden'} className="cc-content-title justify-content-between cc-box-shadow">
             <div className="d-flex">
               <i className="fas fa-city" />
               <h1>Gradovi</h1>
@@ -68,7 +104,7 @@ class CitiesList extends React.Component {
                 <SubmitButton label="Dodaj" />
               </Link>
             </div>
-          </div>
+          </Title>
           <div className="cc-content-list cc-h-100 container">
             {content}
           </div>
@@ -80,6 +116,7 @@ class CitiesList extends React.Component {
 
 CitiesList.propTypes = {
   cities: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  clearCitiesState: PropTypes.func.isRequired,
   getCities: PropTypes.func.isRequired,
   hasFailedToLoad: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,

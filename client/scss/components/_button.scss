@@ -19,6 +19,11 @@
     background-color: $color-primary;
     transition: .2s all;
   }
+
+  &:disabled {
+    background-color: $color-primary;
+    opacity: 0.3;
+  }
 }
 
 .cc-text-button {

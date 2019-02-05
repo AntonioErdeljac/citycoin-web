@@ -1,12 +1,13 @@
 import React from 'react';
 import posed from 'react-pose';
+import Loader from 'react-loader-spinner';
 
 const Box = posed.div({
   visible: { opacity: 1, delay: 325 },
   hidden: { opacity: 0 },
 });
 
-class Empty extends React.Component {
+class Loading extends React.Component {
   constructor() {
     super();
 
@@ -25,12 +26,16 @@ class Empty extends React.Component {
     const { hasLoaded } = this.state;
 
     return (
-      <Box initialPose="hidden" pose={hasLoaded ? 'visible' : 'hidden'} className="cc-empty">
-        <i className="fas fa-box-open" />
-        <p>Nema rezultata</p>
+      <Box initialPose="hidden" pose={hasLoaded ? 'visible' : 'hidden'} className="cc-loading">
+        <Loader
+          type="Oval"
+          color="#4E65F6"
+          height="50"
+          width="50"
+        />
       </Box>
     );
   }
 }
 
-export default Empty;
+export default Loading;
