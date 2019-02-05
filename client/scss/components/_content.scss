@@ -23,7 +23,9 @@
     .cc-card-service {
       h1 {
         font-size: 16px;
+        font-family: 'Poppins';
         color: rgba(0,0,0,0.5);
+        margin: 0;
       }
 
       i {
@@ -34,9 +36,13 @@
     }
 
     .cc-box-title {
+      display: flex;
+      align-items: center;
+
       h1 {
         font-size: 25px;
         color: $color-primary;
+        margin: 0;
       }
 
       i {
@@ -58,6 +64,11 @@
       border-radius: 10px;
       margin-top: 20px;
       padding: 20px;
+
+      .cc-content-form-array-field {
+        flex-shrink: 0.25;
+        width: 100%;
+      }
 
       h1 {
         font-family: 'Poppins';
@@ -85,7 +96,7 @@
       background-color: white;
 
       i {
-        font-size: 15px;
+        font-size: 30px;
         color: $color-primary;
         margin-right: 15px;
       }

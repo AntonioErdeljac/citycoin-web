@@ -7,7 +7,7 @@ import { paths } from '../../../../common/constants';
 
 const NavigationBar = posed.div({
   visible: { opacity: 1, y: '0%' },
-  hidden: { opacity: 0, y: '-100%' },
+  hidden: { opacity: 0, y: '-50%' },
 });
 
 class Navbar extends React.Component {
@@ -49,6 +49,12 @@ class Navbar extends React.Component {
               <li className="cc-navbar-regular-item nav-item">
                 <Link to={paths.client.SERVICES}>
                   Usluge
+                </Link>
+              </li>
+              <div className="cc-navbar-vertical-divider" />
+              <li className="cc-navbar-regular-item nav-item">
+                <Link to={paths.client.SUBSCRIPTIONS}>
+                  Pretplate
                 </Link>
               </li>
             </ul>

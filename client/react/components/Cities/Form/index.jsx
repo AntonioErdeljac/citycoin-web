@@ -1,12 +1,12 @@
 import Geosuggest from 'react-geosuggest';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactModal from 'react-modal';
 import cn from 'classnames';
+import posed, { PoseGroup } from 'react-pose';
 import { Formik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
 import { isEmpty, get } from 'lodash';
-import posed, { PoseGroup } from 'react-pose';
-import ReactModal from 'react-modal';
 
 import schema from './schema';
 import selectors from './selectors';
@@ -20,7 +20,7 @@ import { paths } from '../../../../../common/constants';
 
 const Box = posed.div({
   enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 50) },
-  exit: { opacity: 0, y: '-100%' },
+  exit: { opacity: 0, y: '-50%' },
 });
 
 const FormBox = posed.div({
@@ -34,7 +34,7 @@ const Title = posed.div({
     y: '0%',
     delay: 200,
   },
-  hidden: { opacity: 0, y: '-100%' },
+  hidden: { opacity: 0, y: '-50%' },
 });
 
 class CitiesForm extends React.Component {
@@ -138,7 +138,7 @@ class CitiesForm extends React.Component {
           render={formProps => (
             <form autoComplete="off" onSubmit={formProps.handleSubmit}>
               <Title pose={hasFormLoaded ? 'visible' : 'hidden'} initialPose="hidden" className="cc-content-title justify-content-between cc-box-shadow">
-                <div className="d-flex">
+                <div className="d-flex align-items-center">
                   <i className="fas fa-city" />
                   <h1>{isEmpty(city) ? 'Novi Grad' : city.general.name}</h1>
                 </div>
@@ -208,15 +208,17 @@ class CitiesForm extends React.Component {
                       <React.Fragment>
                         <PoseGroup>
                           {formProps.values.services.map((service, index) => (
-                            <Box i={index} key={index} initialPose="hidden" className="col-12">
+                            <Box i={index} key={index} initialPose="hidden" className={cn('col-12', { 'd-flex': index !== 0 })}>
                               <Select
                                 options={servicesOptions}
                                 {...formProps}
                                 name={`services[${index}]`}
                                 disabled={isSubmitting}
+                                className={cn({ 'cc-content-form-array-field': index !== 0 })}
                                 placeholder="labels.service"
                                 hasFailedToSubmit={hasFailedToSubmit}
                               />
+                              {index !== 0 && <Button className="cc-button-danger ml-3" label="Izbriši" onClick={() => arrayHelpers.remove(index)} />}
                             </Box>
                           ))}
                         </PoseGroup>

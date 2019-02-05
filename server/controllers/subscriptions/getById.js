@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.SUBSCRIPTIONS_404 }).end();
     }
 
-    const subscription = await db.Subscription.getById(req.params.id);
+    const subscription = await db.Subscriptions.getById(req.params.id);
 
     if (!subscription) {
       return res.status(404).json({ message: errorMessages.SUBSCRIPTIONS_404 }).end();

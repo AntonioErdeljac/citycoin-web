@@ -6997,18 +6997,24 @@ a.text-dark:hover, a.text-dark:focus {
       margin-bottom: 15px; }
     .cc-content .cc-card .cc-card-service h1, .cc-content .css-19bon8n .cc-card-service h1 {
       font-size: 16px;
-      color: rgba(0, 0, 0, 0.5); }
+      font-family: 'Poppins';
+      color: rgba(0, 0, 0, 0.5);
+      margin: 0; }
     .cc-content .cc-card .cc-card-service i, .cc-content .css-19bon8n .cc-card-service i {
       margin-right: 15px;
       font-size: 16px;
       color: rgba(0, 0, 0, 0.5); }
-    .cc-content .cc-card .cc-box-title h1, .cc-content .css-19bon8n .cc-box-title h1 {
-      font-size: 25px;
-      color: #4E65F6; }
-    .cc-content .cc-card .cc-box-title i, .cc-content .css-19bon8n .cc-box-title i {
-      margin-right: 15px;
-      font-size: 25px;
-      color: #4E65F6; }
+    .cc-content .cc-card .cc-box-title, .cc-content .css-19bon8n .cc-box-title {
+      display: flex;
+      align-items: center; }
+      .cc-content .cc-card .cc-box-title h1, .cc-content .css-19bon8n .cc-box-title h1 {
+        font-size: 25px;
+        color: #4E65F6;
+        margin: 0; }
+      .cc-content .cc-card .cc-box-title i, .cc-content .css-19bon8n .cc-box-title i {
+        margin-right: 15px;
+        font-size: 25px;
+        color: #4E65F6; }
   .cc-content .cc-content-inner .cc-content-list {
     margin-top: 20px; }
   .cc-content .cc-content-inner .cc-content-form {
@@ -7016,6 +7022,9 @@ a.text-dark:hover, a.text-dark:focus {
     border-radius: 10px;
     margin-top: 20px;
     padding: 20px; }
+    .cc-content .cc-content-inner .cc-content-form .cc-content-form-array-field {
+      flex-shrink: 0.25;
+      width: 100%; }
     .cc-content .cc-content-inner .cc-content-form h1 {
       font-family: 'Poppins';
       font-size: 15px;
@@ -7036,7 +7045,7 @@ a.text-dark:hover, a.text-dark:focus {
     border-radius: 10px;
     background-color: white; }
     .cc-content .cc-content-inner .cc-content-title i {
-      font-size: 15px;
+      font-size: 30px;
       color: #4E65F6;
       margin-right: 15px; }
     .cc-content .cc-content-inner .cc-content-title h1 {

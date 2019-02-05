@@ -10,11 +10,8 @@ module.exports = async (req, res) => {
       return res.status(400).json({ message: errorMessages.SERVICES_400 }).end();
     }
 
-    const createdSubscriptions = await Promise.all(req.body.subscriptions.map(subscription => db.Subscriptions.create(subscription)));
-
     const updatedService = {
       ...req.body,
-      subscriptions: createdSubscriptions.map(subscription => subscription._id),
       authorId: user._id,
     };
 

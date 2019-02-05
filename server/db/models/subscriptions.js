@@ -14,6 +14,7 @@ const Subscriptions = mongoose.model('subscriptions', new Schema({
     durationUnit: types.string({ enum: _.keys(subscriptionsDurationUnitTypes) }),
     price: types.number({ required: true }),
   },
+  authorId: { ref: 'users', type: Schema.Types.ObjectId },
 }, { timestamps: true }));
 
 module.exports.isValid = values => !Subscriptions(values).validateSync();

@@ -14,7 +14,7 @@ import { paths, servicesIcons } from '../../../../../common/constants';
 
 const Box = posed.div({
   enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 100) + 200 },
-  exit: { opacity: 0, y: '-100%' },
+  exit: { opacity: 0, y: '-50%' },
 });
 
 const Title = posed.div({
@@ -22,7 +22,7 @@ const Title = posed.div({
     opacity: 1,
     delay: 200,
   },
-  hidden: { opacity: 0, y: '-100%' },
+  hidden: { opacity: 0, y: '-50%' },
 });
 class ServicesList extends React.Component {
   constructor() {
@@ -87,8 +87,8 @@ class ServicesList extends React.Component {
       <React.Fragment>
         <div className="container cc-h-100 cc-content-inner px-0">
           <Title pose={hasLoaded ? 'visible' : 'hidden'} className="cc-content-title justify-content-between cc-box-shadow">
-            <div className="d-flex">
-              <i className="fas fa-ticket-alt" />
+            <div className="d-flex align-items-center">
+              <i className="fas fa-hand-holding-usd" />
               <h1>Usluge</h1>
             </div>
             <div>

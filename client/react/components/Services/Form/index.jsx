@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import cn from 'classnames';
 import React from 'react';
+import ReactModal from 'react-modal';
+import cn from 'classnames';
+import posed, { PoseGroup } from 'react-pose';
 import { Formik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
-import posed, { PoseGroup } from 'react-pose';
 import { isEmpty, get } from 'lodash';
-import ReactModal from 'react-modal';
 
 import schema from './schema';
 import selectors from './selectors';
@@ -18,7 +18,7 @@ import { servicesIcons, paths } from '../../../../../common/constants';
 
 const Box = posed.div({
   enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 50) },
-  exit: { opacity: 0, y: '-100%' },
+  exit: { opacity: 0, y: '-50%' },
 });
 
 const FormBox = posed.div({
@@ -32,7 +32,7 @@ const Title = posed.div({
     y: '0%',
     delay: 200,
   },
-  hidden: { opacity: 0, y: '-100%' },
+  hidden: { opacity: 0, y: '-50%' },
 });
 
 class ServicesForm extends React.Component {
@@ -48,15 +48,13 @@ class ServicesForm extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params: { id } }, getService } = this.props;
+    const { match: { params: { id } }, getService, getSubscriptions } = this.props;
 
     if (id) {
       getService(id);
     }
 
-    this.setState({
-      hasFormLoaded: true,
-    });
+    getSubscriptions({ isBusiness: true });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -86,9 +84,10 @@ class ServicesForm extends React.Component {
   }
 
   componentWillUnmount() {
-    const { clearServiceState } = this.props;
+    const { clearServiceState, clearSubscriptionsState } = this.props;
 
     clearServiceState();
+    clearSubscriptionsState();
   }
 
   handleSubmit = (values) => {
@@ -123,7 +122,7 @@ class ServicesForm extends React.Component {
   }
 
   render() {
-    const { isSubmitting, hasFailedToSubmit, service, isLoading, hasFailedToLoad, servicesTypesOptions, subscriptionsDurationUnitTypesOptions } = this.props;
+    const { isSubmitting, hasFailedToSubmit, service, isLoading, hasFailedToLoad, servicesTypesOptions, subscriptionsOptions } = this.props;
     const { isNewService, hasFormLoaded, showModal } = this.state;
 
     let content = <Loading />;
@@ -137,8 +136,8 @@ class ServicesForm extends React.Component {
           render={formProps => (
             <form autoComplete="off" onSubmit={formProps.handleSubmit}>
               <Title initialPose="hidden" pose={hasFormLoaded ? 'visible' : 'hidden'} className="cc-content-title justify-content-between cc-box-shadow">
-                <div className="d-flex">
-                  <i className={`fas fa-${servicesIcons[service.type] ? servicesIcons[service.type].icon : 'ticket-alt'}`} />
+                <div className="d-flex align-items-center">
+                  <i className={`fas fa-${servicesIcons[service.type] ? servicesIcons[service.type].icon : 'hand-holding-usd'}`} />
                   <h1>{isEmpty(service) ? 'Nova usluga' : service.general.name}</h1>
                 </div>
                 <div className="d-flex">
@@ -193,67 +192,33 @@ class ServicesForm extends React.Component {
                 </div>
                 <div className="cc-form-divider" />
                 <h1>Pretplate</h1>
-                <div className="mt-3">
+                <div className="row mt-3">
                   <FieldArray
                     name="subscriptions"
                     render={arrayHelpers => (
                       <React.Fragment>
-                        <PoseGroup animateOnMount={false}>
+                        <PoseGroup>
                           {formProps.values.subscriptions.map((subscription, index) => (
-                            <Box className={cn('row', { 'pt-5': index !== 0 })} style={{ position: 'relative' }} key={index} i={index}>
-                              {index !== 0 && <i onClick={() => arrayHelpers.remove(index)} className="fas fa-times" style={{ position: 'absolute', top: 0, right: 10 }} />}
-                              <React.Fragment>
-                                <Input
-                                  className="col-6"
-                                  {...formProps}
-                                  name={`subscriptions[${index}].description`}
-                                  disabled={isSubmitting}
-                                  placeholder="labels.subscriptionDescription"
-                                  hasFailedToSubmit={hasFailedToSubmit}
-                                />
-                                <Input
-                                  className="col-6"
-                                  {...formProps}
-                                  name={`subscriptions[${index}].price`}
-                                  disabled={isSubmitting}
-                                  placeholder="labels.subscriptionPrice"
-                                  hasFailedToSubmit={hasFailedToSubmit}
-                                />
-                                <Input
-                                  className="col-6"
-                                  {...formProps}
-                                  name={`subscriptions[${index}].duration`}
-                                  disabled={isSubmitting}
-                                  placeholder="labels.subscriptionDuration"
-                                  hasFailedToSubmit={hasFailedToSubmit}
-                                />
-                                <Select
-                                  options={subscriptionsDurationUnitTypesOptions}
-                                  className="col-6"
-                                  {...formProps}
-                                  name={`subscriptions[${index}].durationUnit`}
-                                  disabled={isSubmitting}
-                                  placeholder="labels.subscriptionDurationUnit"
-                                  hasFailedToSubmit={hasFailedToSubmit}
-                                />
-                                {index + 1 !== formProps.values.subscriptions.length && <div className="cc-form-divider" />}
-                              </React.Fragment>
+                            <Box i={index} key={index} initialPose="hidden" className={cn('col-12', { 'd-flex': index !== 0 })}>
+                              <Select
+                                options={subscriptionsOptions}
+                                {...formProps}
+                                name={`subscriptions[${index}]`}
+                                disabled={isSubmitting}
+                                className={cn({ 'cc-content-form-array-field': index !== 0 })}
+                                placeholder="labels.subscription"
+                                hasFailedToSubmit={hasFailedToSubmit}
+                              />
+                              {index !== 0 && <Button className="cc-button-danger ml-3" label="Izbriši" onClick={() => arrayHelpers.remove(index)} />}
                             </Box>
                           ))}
                         </PoseGroup>
-                        <div className="row">
-                          <div className="col-4 mt-3">
-                            <Button
-                              type="button"
-                              label="Dodaj pretplatu"
-                              onClick={() => arrayHelpers.push({
-                                description: '',
-                                duration: '',
-                                durationUnit: '',
-                                price: '',
-                              })}
-                            />
-                          </div>
+                        <div className="col-4 mt-3">
+                          <Button
+                            type="button"
+                            label="Dodaj pretplatu"
+                            onClick={() => arrayHelpers.push(undefined)}
+                          />
                         </div>
                       </React.Fragment>
                     )}
@@ -297,6 +262,8 @@ class ServicesForm extends React.Component {
 }
 
 ServicesForm.propTypes = {
+  getSubscriptions: PropTypes.func.isRequired,
+  clearSubscriptionsState: PropTypes.func.isRequired,
   createService: PropTypes.func.isRequired,
   getService: PropTypes.func.isRequired,
   hasFailedToLoad: PropTypes.bool.isRequired,
@@ -306,7 +273,7 @@ ServicesForm.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   removeService: PropTypes.func.isRequired,
   servicesTypesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  subscriptionsDurationUnitTypesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subscriptionsOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   updateService: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -321,5 +288,6 @@ export default connect(
   selectors,
   {
     ...actions.service,
+    ...actions.subscriptions,
   },
 )(ServicesForm);
