@@ -8,8 +8,6 @@ module.exports = async (req, res) => {
       return res.status(400).json({ message: errorMessages.CITIES_404 }).end();
     }
 
-    console.log(req.params.id);
-
     const city = await db.Cities.getById(req.params.id)
       .populate('services');
 

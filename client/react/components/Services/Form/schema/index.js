@@ -9,7 +9,13 @@ const initialValues = values => ({
   general: {
     name: get(values, 'general.name', ''),
   },
-  type: get(values, 'type', ''),
+  type: get(values, 'type', undefined),
+  subscriptions: get(values, 'subscriptions') || [{
+    description: '',
+    duration: '',
+    durationUnit: undefined,
+    price: '',
+  }],
 });
 
 const validations = Yup.object().shape({
@@ -25,6 +31,19 @@ const validations = Yup.object().shape({
   }),
   type: Yup.string()
     .required('Required'),
+  subscriptions: Yup.array()
+    .of(
+      Yup.object().shape({
+        description: Yup.string()
+          .required('Required'),
+        duration: Yup.string()
+          .required('Required'),
+        durationUnit: Yup.string()
+          .required('Required'),
+        price: Yup.number()
+          .required('Required'),
+      }),
+    ),
 });
 
 export default {

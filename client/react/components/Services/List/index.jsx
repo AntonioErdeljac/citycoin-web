@@ -9,7 +9,7 @@ import selectors from './selectors';
 import { SubmitButton, Empty } from '../../common/components';
 
 import actions from '../../../actions';
-import { paths } from '../../../../../common/constants';
+import { paths, servicesIcons } from '../../../../../common/constants';
 
 class ServicesList extends React.Component {
   componentDidMount() {
@@ -31,17 +31,17 @@ class ServicesList extends React.Component {
       content = (
         <div className="row px-0">
           {services.map(service => (
-            <div className="col-4 px-0">
+            <div key={service._id} className="col-4 px-0">
               <div className="cc-card cc-box-shadow mr-3 mb-3">
                 <div className="d-flex cc-box-title">
-                  <i className="fas fa-city" />
-                  <h1>{services.general.name}</h1>
+                  <i className={`fas fa-${servicesIcons[service.type].icon}`} />
+                  <h1>{service.general.name}</h1>
                 </div>
                 <div className="cc-card-divider" />
                 <div className="d-flex">
                   <div className="d-flex cc-card-service">
                     <i className="fas fa-ticket-alt" />
-                    <h1>{services.subscriptions.length} Pretplata</h1>
+                    <h1>{service.subscriptions.length} Pretplata</h1>
                   </div>
                 </div>
                 <div className="cc-card-divider" />

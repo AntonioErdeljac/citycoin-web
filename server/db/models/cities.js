@@ -3,14 +3,13 @@ const mongoose = require('mongoose');
 
 const types = require('./types');
 
-const { locationTypes, statusTypes } = require('../../../common/constants');
+const { locationTypes } = require('../../../common/constants');
 
 const { Schema } = mongoose;
 
 const Cities = mongoose.model('cities', new Schema({
   general: {
     name: types.string({ required: true }),
-    status: types.string({ enum: _.keys(statusTypes), default: statusTypes.DRAFT }),
   },
   location: {
     type: types.string({ default: locationTypes.POINT, enum: _.keys(locationTypes) }),

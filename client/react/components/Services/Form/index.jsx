@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import uniqid from 'uniqid';
-import { Formik, withFormik } from 'formik';
+import { Formik, withFormik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
 import { isEmpty, get } from 'lodash';
 
 import schema from './schema';
 import selectors from './selectors';
 
-import { SubmitButton, Input, Button } from '../../common/components';
+import { SubmitButton, Input, Button, Select } from '../../common/components';
 
 import actions from '../../../actions';
+
+import { servicesIcons } from '../../../../../common/constants';
 
 class ServicesForm extends React.Component {
   constructor() {
@@ -19,7 +20,6 @@ class ServicesForm extends React.Component {
     this.state = {
       isNewService: true,
       serviceId: undefined,
-      subscriptions: [{}],
     };
   }
 
@@ -63,8 +63,8 @@ class ServicesForm extends React.Component {
   }
 
   render() {
-    const { isSubmitting, hasFailedToSubmit, service, isLoading, hasFailedToLoad } = this.props;
-    const { isNewService, subscriptions } = this.state;
+    const { isSubmitting, hasFailedToSubmit, service, isLoading, hasFailedToLoad, servicesTypesOptions, subscriptionsDurationUnitTypesOptions } = this.props;
+    const { isNewService } = this.state;
 
     let content = <p>Loading...</p>;
 
@@ -78,7 +78,7 @@ class ServicesForm extends React.Component {
             <form autoComplete="off" onSubmit={formProps.handleSubmit}>
               <div className="cc-content-title justify-content-between cc-box-shadow">
                 <div className="d-flex">
-                  <i className="fas fa-ticket-alt" />
+                  <i className={`fas fa-${servicesIcons[service.type] ? servicesIcons[service.type].icon : 'ticket-alt'}`} />
                   <h1>{isEmpty(service) ? 'Nova usluga' : service.general.name}</h1>
                 </div>
                 <div>
@@ -118,7 +118,8 @@ class ServicesForm extends React.Component {
                 </div>
                 <h1>Ostalo</h1>
                 <div className="row mt-3">
-                  <Input
+                  <Select
+                    options={servicesTypesOptions}
                     className="col-6"
                     {...formProps}
                     name="type"
@@ -129,48 +130,63 @@ class ServicesForm extends React.Component {
                 </div>
                 <h1>Pretplate</h1>
                 <div className="row mt-3">
-                  {subscriptions.map((subscription, index) => (
-                    <React.Fragment key={uniqid()}>
-                      <Input
-                        className="col-6"
-                        {...formProps}
-                        name={`subscriptions[${index}].description`}
-                        disabled={isSubmitting}
-                        placeholder="labels.subscriptionDescription"
-                        hasFailedToSubmit={hasFailedToSubmit}
-                      />
-                      <Input
-                        className="col-6"
-                        {...formProps}
-                        name={`subscriptions[${index}].price`}
-                        disabled={isSubmitting}
-                        placeholder="labels.subscriptionPrice"
-                        hasFailedToSubmit={hasFailedToSubmit}
-                      />
-                      <Input
-                        className="col-6"
-                        {...formProps}
-                        name={`subscriptions[${index}].duration`}
-                        disabled={isSubmitting}
-                        placeholder="labels.subscriptionDuration"
-                        hasFailedToSubmit={hasFailedToSubmit}
-                      />
-                      <Input
-                        className="col-6"
-                        {...formProps}
-                        name={`subscriptions[${index}].durationUnit`}
-                        disabled={isSubmitting}
-                        placeholder="labels.subscriptionDurationUnit"
-                        hasFailedToSubmit={hasFailedToSubmit}
-                      />
-                      <div className="cc-form-divider" />
-                    </React.Fragment>
-                  ))}
-                </div>
-                <div className="row">
-                  <div className="col-4">
-                    <Button type="button" label="Dodaj pretplatu" onClick={() => this.setState({ subscriptions: subscriptions.concat({}) })} />
-                  </div>
+                  <FieldArray
+                    name="subscriptions"
+                    render={arrayHelpers => (
+                      <React.Fragment>
+                        {formProps.values.subscriptions.map((subscription, index) => (
+                          <React.Fragment key={index}>
+                            <Input
+                              className="col-6"
+                              {...formProps}
+                              name={`subscriptions[${index}].description`}
+                              disabled={isSubmitting}
+                              placeholder="labels.subscriptionDescription"
+                              hasFailedToSubmit={hasFailedToSubmit}
+                            />
+                            <Input
+                              className="col-6"
+                              {...formProps}
+                              name={`subscriptions[${index}].price`}
+                              disabled={isSubmitting}
+                              placeholder="labels.subscriptionPrice"
+                              hasFailedToSubmit={hasFailedToSubmit}
+                            />
+                            <Input
+                              className="col-6"
+                              {...formProps}
+                              name={`subscriptions[${index}].duration`}
+                              disabled={isSubmitting}
+                              placeholder="labels.subscriptionDuration"
+                              hasFailedToSubmit={hasFailedToSubmit}
+                            />
+                            <Select
+                              options={subscriptionsDurationUnitTypesOptions}
+                              className="col-6"
+                              {...formProps}
+                              name={`subscriptions[${index}].durationUnit`}
+                              disabled={isSubmitting}
+                              placeholder="labels.subscriptionDurationUnit"
+                              hasFailedToSubmit={hasFailedToSubmit}
+                            />
+                            {index + 1 !== formProps.values.subscriptions.length && <div className="cc-form-divider" />}
+                          </React.Fragment>
+                        ))}
+                        <div className="col-4 mt-3">
+                          <Button
+                            type="button"
+                            label="Dodaj pretplatu"
+                            onClick={() => arrayHelpers.push({
+                              description: '',
+                              duration: '',
+                              durationUnit: '',
+                              price: '',
+                            })}
+                          />
+                        </div>
+                      </React.Fragment>
+                    )}
+                  />
                 </div>
               </div>
             </form>
@@ -190,13 +206,15 @@ class ServicesForm extends React.Component {
 }
 
 ServicesForm.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  hasFailedToLoad: PropTypes.bool.isRequired,
-  updateService: PropTypes.func.isRequired,
   createService: PropTypes.func.isRequired,
-  hasFailedToSubmit: PropTypes.bool.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
   getService: PropTypes.func.isRequired,
+  hasFailedToLoad: PropTypes.bool.isRequired,
+  hasFailedToSubmit: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  servicesTypesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subscriptionsDurationUnitTypesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  updateService: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,

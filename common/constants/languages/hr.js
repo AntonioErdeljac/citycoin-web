@@ -20,4 +20,32 @@ module.exports.labels = {
   subscriptionDuration: 'Trajanje pretplate',
   subscriptionDurationUnit: 'Vremenska jedinica pretplate',
   subscriptionPrice: 'Cijena pretplate',
+  location: 'Lokacija',
+};
+
+module.exports.durationUnits = {
+  day: 'Dan',
+  days: 'Dana',
+  hour: 'Sat',
+  hours: 'Sati',
+  minute: 'Minuta',
+  minutes: 'Minuta',
+  month: 'Mjesec',
+  months: 'Mjeseci',
+  week: 'Tjedan',
+  weeks: 'Tjedna',
+};
+
+module.exports.serviceTypes = {
+  APARTMENT: 'Apartman',
+  BIKE: 'Bicikla',
+  BUS: 'Autobus',
+  EDUCATION: 'Edukacija',
+  GYM: 'Fitness',
+  HOTEL: 'Hotel',
+  OTHER: 'Ostalo',
+  PARKING: 'Parking',
+  SCOOTER: 'Skuter',
+  STORAGE: 'Skladište',
+  TAXI: 'Taxi',
 };

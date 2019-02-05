@@ -4,27 +4,23 @@ const { errors } = require('../../utils');
 
 module.exports = async (req, res) => {
   try {
-    const { subscriptions, service } = req.body;
+    const { user } = req.identity;
 
-    if (!subscriptions || !service) {
+    if (!req.body) {
       return res.status(400).json({ message: errorMessages.SERVICES_400 }).end();
     }
 
-    if (!db.Services.isValid(service)) {
-      return res.status(400).json({ message: errorMessages.SERVICES_400 }).end();
-    }
-
-    subscriptions.forEach((subscription) => {
-      if (!db.Subscriptions.isValid(subscription)) {
-        return res.status(400).json({ message: errorMessages.SERVICES_400 }).end();
-      }
-      return null;
-    });
+    const createdSubscriptions = await Promise.all(req.body.subscriptions.map(subscription => db.Subscriptions.create(subscription)));
 
     const updatedService = {
-      ...service,
-      subscriptions,
+      ...req.body,
+      subscriptions: createdSubscriptions.map(subscription => subscription._id),
+      authorId: user._id,
     };
+
+    if (!db.Services.isValid(updatedService)) {
+      return res.status(400).json({ message: errorMessages.SERVICES_400 }).end();
+    }
 
     const createdService = await db.Services.create(updatedService);
 

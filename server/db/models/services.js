@@ -17,6 +17,7 @@ const Services = mongoose.model('services', new Schema({
   },
   type: types.string({ enum: _.keys(servicesTypes) }),
   subscriptions: [{ ref: 'subscriptions', type: Schema.Types.ObjectId }],
+  authorId: { ref: 'users', type: Schema.Types.ObjectId },
 }, { timestamps: true }));
 
 module.exports.isValid = values => !Services(values).validateSync();
@@ -49,7 +50,8 @@ module.exports.get = (options = {}) => {
   }
 
   return Promise.all([
-    Services.find(query),
+    Services.find(query)
+      .populate('subscriptions'),
     Services.count(query),
   ])
     .then(([data, total]) => Promise.resolve({ data, total }));

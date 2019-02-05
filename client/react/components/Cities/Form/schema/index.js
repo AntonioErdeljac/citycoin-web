@@ -4,12 +4,15 @@ import { get } from 'lodash';
 const initialValues = values => ({
   general: {
     name: get(values, 'general.name', ''),
-    status: get(values, 'general.status', ''),
   },
   info: {
     iata: get(values, 'info.iata', ''),
-    countryCode: get(values, 'info.countryCode', ''),
+    countryCode: get(values, 'info.countryCode', undefined),
   },
+  location: {
+    coordinates: undefined,
+  },
+  services: [undefined],
 });
 
 const validations = Yup.object().shape({
@@ -21,6 +24,19 @@ const validations = Yup.object().shape({
     countryCode: Yup.string()
       .required('Required'),
   }),
+  location: Yup.object().shape({
+    coordinates: Yup.array()
+      .of(
+        Yup.number()
+          .required('Required'),
+      )
+      .required('Required'),
+  }),
+  services: Yup.array()
+    .of(
+      Yup.string()
+        .required('required'),
+    ),
 });
 
 export default {

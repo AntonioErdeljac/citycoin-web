@@ -1,15 +1,19 @@
+import Geosuggest from 'react-geosuggest';
 import PropTypes from 'prop-types';
 import React from 'react';
+import cn from 'classnames';
+import { Formik, withFormik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
-import { Formik, withFormik } from 'formik';
 import { isEmpty, get } from 'lodash';
 
 import schema from './schema';
 import selectors from './selectors';
 
-import { SubmitButton, Input } from '../../common/components';
+import { SubmitButton, Input, Select, Button } from '../../common/components';
 
 import actions from '../../../actions';
+
+import { _t } from '../../../../../common/i18n';
 
 class CitiesForm extends React.Component {
   constructor() {
@@ -22,11 +26,13 @@ class CitiesForm extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params: { id } }, getCity } = this.props;
+    const { match: { params: { id } }, getCity, getServices } = this.props;
 
     if (id) {
       getCity(id);
     }
+
+    getServices();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,9 +50,10 @@ class CitiesForm extends React.Component {
   }
 
   componentWillUnmount() {
-    const { clearCityState } = this.props;
+    const { clearCityState, clearServicesState } = this.props;
 
     clearCityState();
+    clearServicesState();
   }
 
   handleSubmit = (values) => {
@@ -61,7 +68,7 @@ class CitiesForm extends React.Component {
   }
 
   render() {
-    const { isSubmitting, hasFailedToSubmit, city, isLoading, hasFailedToLoad } = this.props;
+    const { isSubmitting, hasFailedToSubmit, city, isLoading, hasFailedToLoad, countryCodeOptions, servicesOptions } = this.props;
     const { isNewCity } = this.state;
 
     let content = <p>Loading...</p>;
@@ -94,13 +101,20 @@ class CitiesForm extends React.Component {
                     placeholder="labels.name"
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
-                  <Input
+                </div>
+                <h1>Lokacija</h1>
+                <div className="row">
+                  <Geosuggest
                     className="col-6"
-                    {...formProps}
-                    name="general.status"
-                    disabled={isSubmitting}
-                    placeholder="labels.status"
-                    hasFailedToSubmit={hasFailedToSubmit}
+                    inputClassName={cn('form-control form-control-lg', { 'cc-error': get(formProps.errors, 'location.coordinates') && get(formProps.touched, 'location.coordinates') })}
+                    onSuggestSelect={(value) => {
+                      if (value) {
+                        formProps.setFieldValue('location.coordinates', [value.location.lng, value.location.lat]);
+                      }
+                    }}
+                    onChange={() => formProps.setFieldValue('location.coordinates', [undefined, undefined])}
+                    onBlur={() => formProps.setFieldTouched('location.coordinates')}
+                    placeholder={_t('labels.location')}
                   />
                 </div>
                 <h1>Informacije</h1>
@@ -113,7 +127,8 @@ class CitiesForm extends React.Component {
                     placeholder="labels.iata"
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
-                  <Input
+                  <Select
+                    options={countryCodeOptions}
                     className="col-6"
                     {...formProps}
                     name="info.countryCode"
@@ -122,15 +137,33 @@ class CitiesForm extends React.Component {
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
                 </div>
-                <h1>Ostalo</h1>
+                <h1>Usluge</h1>
                 <div className="row mt-3">
-                  <Input
-                    className="col-6"
-                    {...formProps}
+                  <FieldArray
                     name="services"
-                    disabled={isSubmitting}
-                    placeholder="labels.service"
-                    hasFailedToSubmit={hasFailedToSubmit}
+                    render={arrayHelpers => (
+                      <React.Fragment>
+                        {formProps.values.services.map((service, index) => (
+                          <Select
+                            key={index}
+                            options={servicesOptions}
+                            className="col-12"
+                            {...formProps}
+                            name={`services[${index}]`}
+                            disabled={isSubmitting}
+                            placeholder="labels.service"
+                            hasFailedToSubmit={hasFailedToSubmit}
+                          />
+                        ))}
+                        <div className="col-4 mt-3">
+                          <Button
+                            type="button"
+                            label="Dodaj uslugu"
+                            onClick={() => arrayHelpers.push(undefined)}
+                          />
+                        </div>
+                      </React.Fragment>
+                    )}
                   />
                 </div>
               </div>
@@ -151,13 +184,17 @@ class CitiesForm extends React.Component {
 }
 
 CitiesForm.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  hasFailedToLoad: PropTypes.bool.isRequired,
-  updateCity: PropTypes.func.isRequired,
+  clearServicesState: PropTypes.func.isRequired,
+  countryCodeOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   createCity: PropTypes.func.isRequired,
-  hasFailedToSubmit: PropTypes.bool.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
   getCity: PropTypes.func.isRequired,
+  getServices: PropTypes.func.isRequired,
+  hasFailedToLoad: PropTypes.bool.isRequired,
+  hasFailedToSubmit: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  servicesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  updateCity: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -171,5 +208,6 @@ export default connect(
   selectors,
   {
     ...actions.city,
+    ...actions.services,
   },
 )(withFormik({ enableReinitialize: true })(CitiesForm));
