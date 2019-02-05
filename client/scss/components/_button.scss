@@ -41,3 +41,31 @@
     transition: 0.2s all !important;
   }
 }
+
+.cc-button-danger {
+  background-color: rgb(229,56,37);
+  border-radius: 5px;
+  font-family: 'Poppins';
+  font-weight: 400 !important;
+  font-size: 15px;
+  padding: 10px !important;
+  color: white;
+  transition: .2s all;
+  border-style: none;
+
+  &:hover {
+    opacity: 0.6;
+    transition: .2s all;
+  }
+
+  &:focus {
+    color: white;
+    background-color: rgb(229,56,37);
+    transition: .2s all;
+  }
+
+  &:disabled {
+    background-color: rgb(229,56,37);
+    opacity: 0.3;
+  }
+}

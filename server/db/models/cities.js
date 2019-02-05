@@ -14,6 +14,7 @@ const Cities = mongoose.model('cities', new Schema({
   location: {
     type: types.string({ default: locationTypes.POINT, enum: _.keys(locationTypes) }),
     coordinates: { type: [types.number()], index: '2dsphere' },
+    locationLabel: types.string(),
   },
   info: {
     countryCode: types.string({ required: true }),
@@ -52,6 +53,18 @@ module.exports.updateById = (id, values) => {
   };
 
   return Cities.findOneAndUpdate(query, { $set: city }, { new: true });
+};
+
+module.exports.removeById = (id, options = {}) => {
+  const { authorId } = options;
+
+  const query = { _id: id };
+
+  if (authorId) {
+    query.authorId = authorId;
+  }
+
+  return Cities.findOneAndDelete(query);
 };
 
 module.exports.get = (options = {}) => {

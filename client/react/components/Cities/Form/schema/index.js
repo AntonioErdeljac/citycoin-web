@@ -10,7 +10,8 @@ const initialValues = values => ({
     countryCode: get(values, 'info.countryCode', undefined),
   },
   location: {
-    coordinates: get(values, 'location.coordiantes', undefined),
+    coordinates: get(values, 'location.coordinates', undefined),
+    locationLabel: get(values, 'location.locationLabel', undefined),
   },
   services: get(values, 'services', [undefined]),
 });

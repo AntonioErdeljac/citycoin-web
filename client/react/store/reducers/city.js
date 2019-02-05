@@ -20,6 +20,14 @@ const actionMap = {
   }),
   [actions.CITY_GET_FAILURE]: state => ({ ...state, isLoading: false, hasFailedToLoad: true }),
 
+  [actions.CITY_REMOVE_REQUEST]: state => ({ ...state, isLoading: true, hasFailedToLoad: false }),
+  [actions.CITY_REMOVE_SUCCESS]: state => ({
+    ...state,
+    hasFailedToLoad: false,
+    isLoading: false,
+  }),
+  [actions.CITY_REMOVE_FAILURE]: state => ({ ...state, isLoading: false, hasFailedToLoad: true }),
+
   [actions.CITY_CREATE_REQUEST]: state => ({ ...state, isSubmitting: true, hasFailedToSubmit: false }),
   [actions.CITY_CREATE_SUCCESS]: (state, { result }) => ({
     ...state,

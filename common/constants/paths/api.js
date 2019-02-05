@@ -6,6 +6,8 @@ module.exports.v1 = {
   CITIES_ID: '/api/v1/cities/:id',
   SERVICES: '/api/v1/services',
   SERVICES_ID: '/api/v1/services/:id',
+  SUBSCRIPTIONS: '/api/v1/subscriptions',
+  SUBSCRIPTIONS_ID: '/api/v1/subscriptions/:id',
   SERVICES_ID_SUBSCRIPTIONS_ID: '/api/v1/services/:id/subscrptions/:subscriptionId',
   STATIC_USER_PLACEHOLDER: '/static/user-placeholder.png',
   SUBSCRIBED_SERVICES_ID: '/api/v1/subscribed-services/:id',

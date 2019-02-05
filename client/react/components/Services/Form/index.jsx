@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import React from 'react';
 import { Formik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
 import posed, { PoseGroup } from 'react-pose';
 import { isEmpty, get } from 'lodash';
+import ReactModal from 'react-modal';
 
 import schema from './schema';
 import selectors from './selectors';
@@ -12,7 +14,7 @@ import { SubmitButton, Input, Button, Select, Loading } from '../../common/compo
 
 import actions from '../../../actions';
 
-import { servicesIcons } from '../../../../../common/constants';
+import { servicesIcons, paths } from '../../../../../common/constants';
 
 const Box = posed.div({
   enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 50) },
@@ -41,6 +43,7 @@ class ServicesForm extends React.Component {
       isNewService: true,
       serviceId: undefined,
       hasFormLoaded: false,
+      showModal: false,
     };
   }
 
@@ -89,19 +92,39 @@ class ServicesForm extends React.Component {
   }
 
   handleSubmit = (values) => {
-    const { createService, updateService } = this.props;
+    const { createService, updateService, history } = this.props;
     const { serviceId } = this.state;
 
     if (serviceId) {
-      return updateService(values, serviceId);
+      return updateService(values, serviceId)
+        .then(() => history.push(paths.client.SERVICES));
     }
 
-    return createService(values);
+    return createService(values)
+      .then(() => history.push(paths.client.SERVICES));
+  }
+
+  handleTriggerDeleteModal = () => {
+    const { showModal } = this.state;
+
+    this.setState({
+      showModal: !showModal,
+    });
+  }
+
+  handleDeleteService = () => {
+    const { match: { params: { id } }, removeService, history } = this.props;
+
+    removeService(id)
+      .then(() => {
+        this.handleTriggerDeleteModal();
+        history.push(paths.client.SERVICES);
+      });
   }
 
   render() {
     const { isSubmitting, hasFailedToSubmit, service, isLoading, hasFailedToLoad, servicesTypesOptions, subscriptionsDurationUnitTypesOptions } = this.props;
-    const { isNewService, hasFormLoaded } = this.state;
+    const { isNewService, hasFormLoaded, showModal } = this.state;
 
     let content = <Loading />;
 
@@ -118,8 +141,9 @@ class ServicesForm extends React.Component {
                   <i className={`fas fa-${servicesIcons[service.type] ? servicesIcons[service.type].icon : 'ticket-alt'}`} />
                   <h1>{isEmpty(service) ? 'Nova usluga' : service.general.name}</h1>
                 </div>
-                <div>
-                  <SubmitButton label={isNewService ? 'Spremi' : 'Uredi'} />
+                <div className="d-flex">
+                  {!isNewService && <Button onClick={this.handleTriggerDeleteModal} className="mx-3 cc-button-danger" disabled={isSubmitting} label="Izbriši" />}
+                  <SubmitButton disabled={isSubmitting} label={isNewService ? 'Stvori' : 'Spremi'} />
                 </div>
               </Title>
               <FormBox pose={hasFormLoaded ? 'visible' : 'hidden'} initialPose="hidden" className="cc-content-form cc-h-100">
@@ -134,6 +158,7 @@ class ServicesForm extends React.Component {
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
                 </div>
+                <div className="cc-form-divider" />
                 <h1>Tvrtka</h1>
                 <div className="row mt-3">
                   <Input
@@ -153,6 +178,7 @@ class ServicesForm extends React.Component {
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
                 </div>
+                <div className="cc-form-divider" />
                 <h1>Ostalo</h1>
                 <div className="row mt-3">
                   <Select
@@ -165,6 +191,7 @@ class ServicesForm extends React.Component {
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
                 </div>
+                <div className="cc-form-divider" />
                 <h1>Pretplate</h1>
                 <div className="mt-3">
                   <FieldArray
@@ -173,7 +200,8 @@ class ServicesForm extends React.Component {
                       <React.Fragment>
                         <PoseGroup animateOnMount={false}>
                           {formProps.values.subscriptions.map((subscription, index) => (
-                            <Box className="row" key={index} i={index}>
+                            <Box className={cn('row', { 'pt-5': index !== 0 })} style={{ position: 'relative' }} key={index} i={index}>
+                              {index !== 0 && <i onClick={() => arrayHelpers.remove(index)} className="fas fa-times" style={{ position: 'absolute', top: 0, right: 10 }} />}
                               <React.Fragment>
                                 <Input
                                   className="col-6"
@@ -241,6 +269,26 @@ class ServicesForm extends React.Component {
     return (
       <React.Fragment>
         <div className="container cc-content-inner px-0">
+          <ReactModal
+            ariaHideApp={false}
+            isOpen={showModal}
+            closeTimeoutMS={200}
+            className="cc-modal"
+            onRequestClose={this.handleTriggerDeleteModal}
+            overlayClassName="cc-modal-overlay"
+          >
+            <p>Jeste li sigurni?</p>
+            <div className="container-fluid">
+              <div className="row mt-3">
+                <div className="col-6">
+                  <Button onClick={this.handleDeleteService} disabled={isLoading} label="Da" />
+                </div>
+                <div className="col-6">
+                  <Button disabled={isLoading} onClick={this.handleTriggerDeleteModal} label="Ne" />
+                </div>
+              </div>
+            </div>
+          </ReactModal>
           {content}
         </div>
       </React.Fragment>
@@ -253,8 +301,10 @@ ServicesForm.propTypes = {
   getService: PropTypes.func.isRequired,
   hasFailedToLoad: PropTypes.bool.isRequired,
   hasFailedToSubmit: PropTypes.bool.isRequired,
+  history: PropTypes.shape({}).isRequired,
   isLoading: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
+  removeService: PropTypes.func.isRequired,
   servicesTypesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   subscriptionsDurationUnitTypesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   updateService: PropTypes.func.isRequired,

@@ -20,6 +20,14 @@ const actionMap = {
   }),
   [actions.SERVICE_GET_FAILURE]: state => ({ ...state, isLoading: false, hasFailedToLoad: true }),
 
+  [actions.SERVICE_REMOVE_REQUEST]: state => ({ ...state, isLoading: true, hasFailedToLoad: false }),
+  [actions.SERVICE_REMOVE_SUCCESS]: state => ({
+    ...state,
+    hasFailedToLoad: false,
+    isLoading: false,
+  }),
+  [actions.SERVICE_REMOVE_FAILURE]: state => ({ ...state, isLoading: false, hasFailedToLoad: true }),
+
   [actions.SERVICE_CREATE_REQUEST]: state => ({ ...state, isSubmitting: true, hasFailedToSubmit: false }),
   [actions.SERVICE_CREATE_SUCCESS]: (state, { result }) => ({
     ...state,

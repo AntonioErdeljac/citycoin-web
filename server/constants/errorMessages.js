@@ -8,6 +8,7 @@ module.exports = {
   SERVICE_INSUFFICIENT_FUNDS_400: 'Insufficient funds',
   SUBSCRIBED_SERVICE_404: 'Subscribed service does not exist',
   SUBSCRIBED_SERVICE_EXPIRED_410: 'Subscribed service has expired',
+  SUBSCRIPTIONS_400: 'Invalid subscription data',
   SUBSCRIPTIONS_404: 'Subscription does not exist',
   USER_404: 'User does not exist',
   USER_EMAIL_409: 'Email is already taken',

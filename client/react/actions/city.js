@@ -35,4 +35,15 @@ export default {
       promise: client => client.get(paths.build(paths.api.v1.CITIES_ID, id)),
     },
   }),
+
+  removeCity: id => ({
+    [actions.API_CALL]: {
+      types: [
+        actions.CITY_REMOVE_REQUEST,
+        actions.CITY_REMOVE_SUCCESS,
+        actions.CITY_REMOVE_FAILURE,
+      ],
+      promise: client => client.delete(paths.build(paths.api.v1.CITIES_ID, id)),
+    },
+  }),
 };

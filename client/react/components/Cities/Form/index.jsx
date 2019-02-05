@@ -6,6 +6,7 @@ import { Formik, FieldArray } from 'formik';
 import { connect } from 'react-redux';
 import { isEmpty, get } from 'lodash';
 import posed, { PoseGroup } from 'react-pose';
+import ReactModal from 'react-modal';
 
 import schema from './schema';
 import selectors from './selectors';
@@ -15,6 +16,7 @@ import { SubmitButton, Input, Select, Button, Loading } from '../../common/compo
 import actions from '../../../actions';
 
 import { _t } from '../../../../../common/i18n';
+import { paths } from '../../../../../common/constants';
 
 const Box = posed.div({
   enter: { opacity: 1, y: '0%', delay: ({ i }) => (i * 50) },
@@ -43,6 +45,7 @@ class CitiesForm extends React.Component {
       isNewCity: true,
       cityId: undefined,
       hasFormLoaded: false,
+      showModal: false,
     };
   }
 
@@ -53,7 +56,7 @@ class CitiesForm extends React.Component {
       getCity(id);
     }
 
-    getServices();
+    getServices({ isBusiness: true });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,20 +92,40 @@ class CitiesForm extends React.Component {
     clearServicesState();
   }
 
+  handleTriggerDeleteModal = () => {
+    const { showModal } = this.state;
+
+    this.setState({
+      showModal: !showModal,
+    });
+  }
+
   handleSubmit = (values) => {
-    const { createCity, updateCity } = this.props;
+    const { createCity, updateCity, history } = this.props;
     const { cityId } = this.state;
 
     if (cityId) {
-      return updateCity(values, cityId);
+      return updateCity(values, cityId)
+        .then(() => history.push(paths.client.CITIES));
     }
 
-    return createCity(values);
+    return createCity(values)
+      .then(() => history.push(paths.client.CITIES));
+  }
+
+  handleDeleteCity = () => {
+    const { match: { params: { id } }, removeCity, history } = this.props;
+
+    removeCity(id)
+      .then(() => {
+        this.handleTriggerDeleteModal();
+        history.push(paths.client.CITIES);
+      });
   }
 
   render() {
     const { isSubmitting, hasFailedToSubmit, city, isLoading, hasFailedToLoad, countryCodeOptions, servicesOptions } = this.props;
-    const { isNewCity, hasFormLoaded } = this.state;
+    const { isNewCity, hasFormLoaded, showModal } = this.state;
 
     let content = <Loading />;
 
@@ -119,8 +142,9 @@ class CitiesForm extends React.Component {
                   <i className="fas fa-city" />
                   <h1>{isEmpty(city) ? 'Novi Grad' : city.general.name}</h1>
                 </div>
-                <div>
-                  <SubmitButton disabled={isSubmitting} label={isNewCity ? 'Spremi' : 'Uredi'} />
+                <div className="d-flex">
+                  {!isNewCity && <Button onClick={this.handleTriggerDeleteModal} className="mx-3 cc-button-danger" disabled={isSubmitting} label="Izbriši" />}
+                  <SubmitButton disabled={isSubmitting} label={isNewCity ? 'Stvori' : 'Spremi'} />
                 </div>
               </Title>
               <FormBox initialPose="hidden" pose={hasFormLoaded ? 'visible' : 'hidden'} className="cc-content-form cc-h-100 mb-3">
@@ -135,23 +159,26 @@ class CitiesForm extends React.Component {
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
                 </div>
+                <div className="cc-form-divider" />
                 <h1>Lokacija</h1>
                 <div className="row">
                   <Geosuggest
                     disabled={isSubmitting}
-                    initialValue={get(formProps.values, 'general.name')}
                     className="col-6"
                     inputClassName={cn('form-control form-control-lg', { 'cc-error': get(formProps.errors, 'location.coordinates') && get(formProps.touched, 'location.coordinates') })}
                     onSuggestSelect={(value) => {
                       if (value) {
                         formProps.setFieldValue('location.coordinates', [value.location.lng, value.location.lat]);
+                        formProps.setFieldValue('location.locationLabel', value.label);
                       }
                     }}
+                    initialValue={get(formProps.values, 'location.locationLabel', undefined)}
                     onChange={() => formProps.setFieldValue('location.coordinates', [undefined, undefined])}
                     onBlur={() => formProps.setFieldTouched('location.coordinates')}
                     placeholder={_t('labels.location')}
                   />
                 </div>
+                <div className="cc-form-divider" />
                 <h1>Informacije</h1>
                 <div className="row">
                   <Input
@@ -172,6 +199,7 @@ class CitiesForm extends React.Component {
                     hasFailedToSubmit={hasFailedToSubmit}
                   />
                 </div>
+                <div className="cc-form-divider" />
                 <h1>Usluge</h1>
                 <div className="row mt-3">
                   <FieldArray
@@ -213,6 +241,26 @@ class CitiesForm extends React.Component {
 
     return (
       <React.Fragment>
+        <ReactModal
+          ariaHideApp={false}
+          isOpen={showModal}
+          closeTimeoutMS={200}
+          className="cc-modal"
+          onRequestClose={this.handleTriggerDeleteModal}
+          overlayClassName="cc-modal-overlay"
+        >
+          <p>Jeste li sigurni?</p>
+          <div className="container-fluid">
+            <div className="row mt-3">
+              <div className="col-6">
+                <Button onClick={this.handleDeleteCity} disabled={isLoading} label="Da" />
+              </div>
+              <div className="col-6">
+                <Button disabled={isLoading} onClick={this.handleTriggerDeleteModal} label="Ne" />
+              </div>
+            </div>
+          </div>
+        </ReactModal>
         <div className="container cc-content-inner px-0">
           {content}
         </div>
@@ -231,8 +279,10 @@ CitiesForm.propTypes = {
   hasFailedToSubmit: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
+  removeCity: PropTypes.func.isRequired,
   servicesOptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   updateCity: PropTypes.func.isRequired,
+  history: PropTypes.shape({}).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,

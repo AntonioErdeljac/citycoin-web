@@ -6957,6 +6957,27 @@ a.text-dark:hover, a.text-dark:focus {
     opacity: 0.5 !important;
     transition: 0.2s all !important; }
 
+.cc-button-danger {
+  background-color: #e53825;
+  border-radius: 5px;
+  font-family: 'Poppins';
+  font-weight: 400 !important;
+  font-size: 15px;
+  padding: 10px !important;
+  color: white;
+  transition: .2s all;
+  border-style: none; }
+  .cc-button-danger:hover {
+    opacity: 0.6;
+    transition: .2s all; }
+  .cc-button-danger:focus {
+    color: white;
+    background-color: #e53825;
+    transition: .2s all; }
+  .cc-button-danger:disabled {
+    background-color: #e53825;
+    opacity: 0.3; }
+
 .cc-content {
   margin-top: 20px; }
   .cc-content .cc-card, .cc-content .css-19bon8n {
@@ -6997,16 +7018,16 @@ a.text-dark:hover, a.text-dark:focus {
     padding: 20px; }
     .cc-content .cc-content-inner .cc-content-form h1 {
       font-family: 'Poppins';
-      font-size: 25px;
-      color: #4E65F6;
+      font-size: 15px;
+      color: rgba(0, 0, 0, 0.6);
       margin-bottom: 15px;
       margin-top: 15px; }
     .cc-content .cc-content-inner .cc-content-form .cc-form-divider {
       width: 100%;
       height: 1px;
       background-color: rgba(0, 0, 0, 0.1);
-      margin-top: 15px;
-      margin-bottom: 15px; }
+      margin-top: 30px;
+      margin-bottom: 30px; }
   .cc-content .cc-content-inner .cc-content-title {
     display: flex;
     justify-content: center;
@@ -7301,6 +7322,45 @@ a.text-dark:hover, a.text-dark:focus {
       background-color: rgba(0, 0, 0, 0.03);
       color: #4E65F6;
       cursor: pointer; }
+
+.cc-modal {
+  position: absolute;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  width: 400px;
+  height: 165px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column; }
+  .cc-modal p {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.6);
+    font-family: 'Poppins';
+    text-align: center; }
+
+.cc-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.15); }
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out; }
+
+.ReactModal__Overlay--after-open {
+  opacity: 1; }
+
+.ReactModal__Overlay--before-close {
+  opacity: 0; }
 
 .cc-h-100 {
   height: 100%; }
