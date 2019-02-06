@@ -13,7 +13,9 @@ const initialValues = values => ({
     coordinates: get(values, 'location.coordinates', undefined),
     locationLabel: get(values, 'location.locationLabel', undefined),
   },
-  services: get(values, 'services', [undefined]),
+  services: (values && values.services)
+    ? values.services.map(service => ({ label: service.general ? service.general.name : service.label, value: service._id ? service._id : service.value }))
+    : [undefined],
 });
 
 const validations = Yup.object().shape({

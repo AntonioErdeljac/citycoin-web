@@ -16,7 +16,9 @@ const initialValues = values => ({
     password: get(values, 'authentication.password', ''),
   },
   type: userTypes.SUPERVISOR,
-  services: get(values, 'services', [undefined]),
+  services: (values && values.services)
+    ? values.services.map(service => ({ label: service.general ? service.general.name : service.label, value: service._id ? service._id : service.value }))
+    : [undefined],
 });
 
 const validations = values => Yup.object().shape({

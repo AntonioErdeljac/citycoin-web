@@ -10,7 +10,9 @@ const initialValues = values => ({
     name: get(values, 'general.name', ''),
   },
   type: get(values, 'type', undefined),
-  subscriptions: get(values, 'subscriptions', [undefined]),
+  subscriptions: (values && values.subscriptions)
+    ? values.subscriptions.map(subscription => (subscription._id ? subscription._id : subscription.value))
+    : [undefined],
 });
 
 const validations = Yup.object().shape({

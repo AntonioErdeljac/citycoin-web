@@ -10,7 +10,9 @@ class Select extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: get(props.values, props.name, '1'),
+      selectedValue: typeof get(props.values, props.name) !== 'object'
+        ? get(props.values, props.name, 'placeholder')
+        : get(props.values, `${props.name}.value`, 'placeholder'),
     };
   }
 
@@ -38,7 +40,7 @@ class Select extends React.Component {
           className={cn('cc-input form-control form-control-lg', { 'cc-error': get(errors, name) && get(touched, name) })}
           type={type}
         >
-          <option value="1" disabled>{_t(placeholder)}</option>
+          <option value="placeholder" disabled>{_t(placeholder)}</option>
           {options.map(option => (
             <option key={uniqid()} value={option.value}>
               {option.label}
