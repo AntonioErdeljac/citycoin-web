@@ -1,4 +1,5 @@
 module.exports.labels = {
+  businessName: 'Ime tvrtke',
   companyName: 'Naziv tvrtke',
   companyNin: 'OIB tvrtke',
   countryCode: 'Kod države',

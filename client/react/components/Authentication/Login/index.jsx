@@ -76,7 +76,7 @@ class Login extends React.Component {
       content = (
         <div className="col-6 cc-login-user cc-login-inner">
           <img src={user.personal.imageUrl || paths.api.v1.STATIC_USER_PLACEHOLDER} />
-          <p>{user.personal.firstName} {user.personal.lastName}</p>
+          <p>{user.personal.businessName}</p>
           <SubmitButton onClick={this.redirect} label="labels.submit" />
           <button onClick={this.logout} type="button" className="cc-text-button">{_t('labels.logout')}</button>
         </div>

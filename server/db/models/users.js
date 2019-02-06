@@ -19,9 +19,10 @@ const Users = mongoose.model('users', new Schema({
     email: types.string({ required: true }),
   },
   personal: {
-    firstName: types.string({ required: true }),
+    firstName: types.string(),
     imageUrl: types.string(),
-    lastName: types.string({ required: true }),
+    lastName: types.string(),
+    businessName: types.string(),
     nin: types.string({ required: true }),
   },
   type: types.string({ required: true, enum: _.keys(userTypes), default: userTypes.REGULAR }),

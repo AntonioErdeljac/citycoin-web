@@ -10,8 +10,7 @@ const initialValues = {
     password: '',
   },
   personal: {
-    firstName: '',
-    lastName: '',
+    businessName: '',
     nin: '',
   },
   type: userTypes.ADMIN,
@@ -29,9 +28,7 @@ const validations = Yup.object().shape({
       .required('Required'),
   }),
   personal: Yup.object().shape({
-    firstName: Yup.string()
-      .required('Required'),
-    lastName: Yup.string()
+    businessName: Yup.string()
       .required('Required'),
     nin: Yup.string()
       .required('Required'),

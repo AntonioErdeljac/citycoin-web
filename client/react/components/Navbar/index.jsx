@@ -81,7 +81,7 @@ class Navbar extends React.Component {
               <li className="cc-navbar-user nav-item">
                 <img className="cc-navbar-user-img" src={user.personal.imageUrl || paths.api.v1.STATIC_USER_PLACEHOLDER} />
                 <div className="cc-user-wrapper">
-                  <div className="cc-navbar-item" href="#">{user.personal.firstName} {user.personal.lastName}</div>
+                  <div className="cc-navbar-item" href="#">{user.personal.businessName}</div>
                   <div className="cc-navbar-item-lower" href="#">${user.walletId.general.amount}</div>
                 </div>
                 <button type="button" onClick={this.handleTriggerModal} className="cc-navbar-caret ml-4">

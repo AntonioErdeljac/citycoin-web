@@ -47,15 +47,8 @@ class Register extends React.Component {
               <Input
                 {...formProps}
                 disabled={isSubmitting}
-                name="personal.firstName"
-                placeholder="labels.firstName"
-                hasFailedToSubmit={hasFailedToSubmit}
-              />
-              <Input
-                {...formProps}
-                disabled={isSubmitting}
-                name="personal.lastName"
-                placeholder="labels.lastName"
+                name="personal.businessName"
+                placeholder="labels.businessName"
                 hasFailedToSubmit={hasFailedToSubmit}
               />
               <Input
@@ -93,7 +86,7 @@ class Register extends React.Component {
       content = (
         <div className="col-6 cc-login-user cc-login-inner">
           <img src={user.personal.imageUrl || paths.api.v1.STATIC_USER_PLACEHOLDER} />
-          <p>{user.personal.firstName} {user.personal.lastName}</p>
+          <p>{user.personal.businessName}</p>
           <SubmitButton onClick={() => { window.location = paths.client.CITIES; }} label="labels.submit" />
           <button onClick={this.logout} type="button" className="cc-text-button">{_t('labels.logout')}</button>
         </div>
