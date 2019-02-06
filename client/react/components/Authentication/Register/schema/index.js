@@ -1,5 +1,7 @@
 import * as Yup from 'yup';
 
+import { userTypes } from '../../../../../../common/constants';
+
 const initialValues = {
   contact: {
     email: '',
@@ -12,6 +14,7 @@ const initialValues = {
     lastName: '',
     nin: '',
   },
+  type: userTypes.ADMIN,
 };
 
 const validations = Yup.object().shape({

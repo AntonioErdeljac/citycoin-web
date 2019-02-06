@@ -25,6 +25,8 @@ const Users = mongoose.model('users', new Schema({
     nin: types.string({ required: true }),
   },
   type: types.string({ required: true, enum: _.keys(userTypes), default: userTypes.REGULAR }),
+  authorId: { ref: 'users', type: Schema.Types.ObjectId },
+  services: [{ ref: 'services', type: Schema.Types.ObjectId }],
 
   __v: types.number({ select: false }),
   createdAt: types.date(),
@@ -40,8 +42,18 @@ module.exports.create = (values) => {
     .then(createdUser => Promise.resolve(_.omit(createdUser.toObject(), ['authentication'])));
 };
 
-module.exports.getByEmail = (email) => {
+module.exports.getByEmail = (email, options = {}) => {
+  const { excludedUserId, type } = options;
+
   const query = { 'contact.email': new RegExp(`^${_.escapeRegExp(_.trim(email))}$`, 'i') };
+
+  if (excludedUserId) {
+    query._id = { $ne: excludedUserId };
+  }
+
+  if (type) {
+    query.type = type;
+  }
 
   return Users.findOne(query);
 };
@@ -56,4 +68,51 @@ module.exports.getById = (id) => {
   const query = { _id: id };
 
   return Users.findOne(query);
+};
+
+module.exports.get = (options = {}) => {
+  const { keyword, authorId } = options;
+
+  const query = {};
+
+  if (authorId) {
+    query.authorId = authorId;
+  }
+
+  if (keyword) {
+    query.$or = [
+      { 'personal.firstName': new RegExp(_.escapeRegExp(_.trim(keyword)), 'i') },
+      { 'personal.lastName': new RegExp(_.escapeRegExp(_.trim(keyword)), 'i') },
+    ];
+  }
+
+  return Promise.all([
+    Users.find(query)
+      .populate('services'),
+    Users.count(query),
+  ])
+    .then(([data, total]) => Promise.resolve({ data, total }));
+};
+
+module.exports.removeById = (id, options = {}) => {
+  const { authorId } = options;
+
+  const query = { _id: id };
+
+  if (authorId) {
+    query.authorId = authorId;
+  }
+
+  return Users.findOneAndDelete(query);
+};
+
+module.exports.updateById = (id, values) => {
+  const user = _.omit(values, ['_id']);
+
+  const query = {
+    _id: id,
+    authorId: user.authorId,
+  };
+
+  return Users.findOneAndUpdate(query, { $set: user }, { new: true });
 };

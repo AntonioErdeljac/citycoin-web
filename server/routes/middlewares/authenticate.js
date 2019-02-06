@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
       return res.redirect(paths.client.LOGIN);
     }
 
-    const user = await db.Users.getBySessionToken(token).lean();
+    const user = await db.Users.getBySessionToken(token).populate('walletId').lean();
 
     if (!user) {
       res.clearCookie(cookies.AUTHENICATION, build.cookieOptions());

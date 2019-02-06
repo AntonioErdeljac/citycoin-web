@@ -2,15 +2,17 @@ const db = require('../../db');
 const { errorMessages } = require('../../constants');
 const { errors, hash, tokens, build } = require('../../utils');
 
-const { cookies } = require('../../../common/constants');
+const { cookies, userTypes } = require('../../../common/constants');
 
 module.exports = async (req, res) => {
   try {
+    const { isBusiness } = req.query;
+
     if (!req.body.email || !req.body.password) {
       return res.status(400).json({ message: errorMessages.LOGIN_400 }).end();
     }
 
-    const user = await db.Users.getByEmail(req.body.email)
+    const user = await db.Users.getByEmail(req.body.email, isBusiness ? { type: userTypes.ADMIN } : undefined)
       .populate({
         path: 'subscribedServices',
         populate: {

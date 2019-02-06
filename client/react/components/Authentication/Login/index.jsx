@@ -19,7 +19,7 @@ class Login extends React.Component {
   handleSubmit = (values) => {
     const { login } = this.props;
 
-    login(values);
+    login(values, { isBusiness: true });
   };
 
   purgeForm = () => {

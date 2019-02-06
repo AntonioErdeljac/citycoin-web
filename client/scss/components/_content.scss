@@ -23,7 +23,7 @@
     .cc-card-service {
       h1 {
         font-size: 16px;
-        font-family: 'Poppins';
+        font-family: 'Poppins' !important;
         color: rgba(0,0,0,0.5);
         margin: 0;
       }
@@ -41,6 +41,7 @@
 
       h1 {
         font-size: 25px;
+        font-family: 'Poppins';
         color: $color-primary;
         margin: 0;
       }
@@ -103,7 +104,7 @@
 
       h1 {
         color: $color-primary;
-        font-size: 15px;
+        font-size: 20px;
         font-family: 'Poppins';
         font-weight: 500 !important;
         margin: 0 !important;

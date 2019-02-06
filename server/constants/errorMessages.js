@@ -10,6 +10,8 @@ module.exports = {
   SUBSCRIBED_SERVICE_EXPIRED_410: 'Subscribed service has expired',
   SUBSCRIPTIONS_400: 'Invalid subscription data',
   SUBSCRIPTIONS_404: 'Subscription does not exist',
+  USERS_400: 'Invalid user data',
+  USERS_404: 'User does not exist',
   USER_404: 'User does not exist',
   USER_EMAIL_409: 'Email is already taken',
   USER_PASSWORD_400: 'Password is too short',

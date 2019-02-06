@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
     }
 
     const user = await db.Users.getById(req.params.id)
+      .populate('services')
       .populate({
         path: 'subscribedServices',
         populate: {

@@ -6997,7 +6997,7 @@ a.text-dark:hover, a.text-dark:focus {
       margin-bottom: 15px; }
     .cc-content .cc-card .cc-card-service h1, .cc-content .css-19bon8n .cc-card-service h1 {
       font-size: 16px;
-      font-family: 'Poppins';
+      font-family: 'Poppins' !important;
       color: rgba(0, 0, 0, 0.5);
       margin: 0; }
     .cc-content .cc-card .cc-card-service i, .cc-content .css-19bon8n .cc-card-service i {
@@ -7009,6 +7009,7 @@ a.text-dark:hover, a.text-dark:focus {
       align-items: center; }
       .cc-content .cc-card .cc-box-title h1, .cc-content .css-19bon8n .cc-box-title h1 {
         font-size: 25px;
+        font-family: 'Poppins';
         color: #4E65F6;
         margin: 0; }
       .cc-content .cc-card .cc-box-title i, .cc-content .css-19bon8n .cc-box-title i {
@@ -7050,7 +7051,7 @@ a.text-dark:hover, a.text-dark:focus {
       margin-right: 15px; }
     .cc-content .cc-content-inner .cc-content-title h1 {
       color: #4E65F6;
-      font-size: 15px;
+      font-size: 20px;
       font-family: 'Poppins';
       font-weight: 500 !important;
       margin: 0 !important; }
@@ -7258,20 +7259,29 @@ a.text-dark:hover, a.text-dark:focus {
       transition: .2s all;
       color: #4E65F6 !important; }
   .cc-navbar .cc-navbar-caret {
-    background-color: #4E65F6;
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
     display: flex;
     justify-content: center;
-    align-items: center; }
+    outline: none !important;
+    box-shadow: none !important;
+    align-items: center;
+    transition: .2s all;
+    border: none; }
+    .cc-navbar .cc-navbar-caret:hover {
+      opacity: 0.4;
+      transition: .2s all; }
     .cc-navbar .cc-navbar-caret i {
-      color: white; }
+      color: #4E65F6;
+      font-size: 20px; }
   .cc-navbar .cc-user-wrapper {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column; }
+    .cc-navbar .cc-user-wrapper .cc-navbar-vertical-divider-user {
+      width: 1px;
+      margin-left: 15px;
+      margin-right: 15px;
+      background-color: rgba(0, 0, 0, 0.1); }
     .cc-navbar .cc-user-wrapper .cc-navbar-item {
       font-family: 'Poppins';
       font-size: 15px;

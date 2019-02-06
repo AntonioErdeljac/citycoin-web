@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
     }
 
-    const updatedService = await db.Services.updateById(id, existingService);
+    const updatedService = await db.Services.updateById(id, service);
 
     return res.status(200).json(updatedService).end();
   } catch (error) {

@@ -29,7 +29,7 @@ class Register extends React.Component {
   }
 
   logout = () => {
-    window.location = paths.client.CITIES;
+    window.location = paths.client.LOGOUT;
   }
 
   render() {
@@ -94,7 +94,7 @@ class Register extends React.Component {
         <div className="col-6 cc-login-user cc-login-inner">
           <img src={user.personal.imageUrl || paths.api.v1.STATIC_USER_PLACEHOLDER} />
           <p>{user.personal.firstName} {user.personal.lastName}</p>
-          <SubmitButton label="labels.submit" />
+          <SubmitButton onClick={() => { window.location = paths.client.CITIES; }} label="labels.submit" />
           <button onClick={this.logout} type="button" className="cc-text-button">{_t('labels.logout')}</button>
         </div>
       );

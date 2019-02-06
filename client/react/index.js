@@ -8,7 +8,7 @@ import { createStore, applyMiddleware } from 'redux';
 
 import '../scss/style.scss';
 
-import { Authentication, Navbar, Cities, Services, Subscriptions } from './components';
+import { Authentication, Navbar, Cities, Services, Subscriptions, Supervisors } from './components';
 import { reducers, middleware } from './store';
 
 import { setLocale } from '../../common/i18n';
@@ -30,6 +30,10 @@ window.onload = () => {
                 <Route path={paths.client.REGISTER} component={Authentication.Register} />
                 <Navbar>
                   <Switch>
+                    <Route path={paths.client.SUPERVISORS_NEW} component={Supervisors.Form} />
+                    <Route path={paths.client.SUPERVISORS_ID} component={Supervisors.Form} />
+                    <Route path={paths.client.SUPERVISORS} component={Supervisors.List} />
+
                     <Route path={paths.client.SUBSCRIPTIONS_NEW} component={Subscriptions.Form} />
                     <Route path={paths.client.SUBSCRIPTIONS_ID} component={Subscriptions.Form} />
                     <Route path={paths.client.SUBSCRIPTIONS} component={Subscriptions.List} />

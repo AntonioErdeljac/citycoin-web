@@ -53,6 +53,22 @@ module.exports = async (req, res) => {
 
     wallet.general.amount -= subscription.price;
 
+    const foundAuthor = await db.Users.getById(subscription.authorId);
+
+    if (!foundAuthor) {
+      return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
+    }
+
+    const foundAuthorWallet = await db.Wallets.getById(foundAuthor.walletId);
+
+    if (!foundAuthorWallet) {
+      return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
+    }
+
+    foundAuthorWallet.amount += subscription.price;
+
+    await foundAuthorWallet.save();
+
     await wallet.save();
 
     await foundUser.save();

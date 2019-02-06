@@ -5,6 +5,8 @@ import service from './service';
 import services from './services';
 import subscription from './subscription';
 import subscriptions from './subscriptions';
+import user from './user';
+import users from './users';
 
 export default {
   authentication,
@@ -14,4 +16,6 @@ export default {
   services,
   subscription,
   subscriptions,
+  user,
+  users,
 };
