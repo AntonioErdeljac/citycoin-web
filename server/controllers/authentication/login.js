@@ -32,7 +32,6 @@ module.exports = async (req, res) => {
     }
 
     if (user.authentication.password !== hash.password(user.authentication.salt, req.body.password)) {
-      console.log('ovo sjebe?');
       return res.status(400).json({ message: errorMessages.LOGIN_400 }).end();
     }
 

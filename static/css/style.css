@@ -6979,7 +6979,7 @@ a.text-dark:hover, a.text-dark:focus {
     opacity: 0.3; }
 
 .cc-content {
-  margin-top: 20px; }
+  padding-top: 20px !important; }
   .cc-content .cc-card, .cc-content .css-19bon8n {
     border-radius: 10px;
     background-color: white;
@@ -7231,6 +7231,7 @@ a.text-dark:hover, a.text-dark:focus {
 .cc-navbar {
   border-radius: 10px;
   background-color: white !important;
+  margin-top: 20px;
   padding: 20px !important; }
   .cc-navbar .cc-navbar-action {
     background-color: #4E65F6; }
@@ -7397,7 +7398,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 body {
   background: #ecf0f1;
-  padding-top: 20px; }
+  height: calc(100% - 20px); }
 
 a {
   color: inherit;
