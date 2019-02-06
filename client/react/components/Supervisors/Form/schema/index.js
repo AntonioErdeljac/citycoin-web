@@ -17,7 +17,7 @@ const initialValues = values => ({
   },
   type: userTypes.SUPERVISOR,
   services: (values && values.services)
-    ? values.services.map(service => ({ label: service.general ? service.general.name : service.label, value: service._id ? service._id : service.value }))
+    ? values.services.map(service => (service._id ? service._id : service.value))
     : [undefined],
 });
 

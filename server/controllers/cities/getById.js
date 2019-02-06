@@ -9,7 +9,12 @@ module.exports = async (req, res) => {
     }
 
     const city = await db.Cities.getById(req.params.id)
-      .populate('services');
+      .populate({
+        path: 'services',
+        populate: {
+          path: 'subscriptions',
+        },
+      });
 
     if (!city) {
       return res.status(400).json({ message: errorMessages.CITIES_404 }).end();

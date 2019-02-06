@@ -34,12 +34,12 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.WALLET_404 }).end();
     }
 
-    if (subscription.price > wallet.general.amount) {
+    if (subscription.general.price > wallet.general.amount) {
       return res.status(400).json({ message: errorMessages.SERVICE_INSUFFICIENT_FUNDS_400 }).end();
     }
 
     const subscribedService = {
-      endsAt: moment(new Date()).add(subscription.duration, subscription.unit),
+      endsAt: moment(new Date()).add(subscription.general.duration, `${subscription.general.durationUnit}s`),
       serviceId: service._id,
       startsAt: new Date(),
       subscriptionId: subscription._id,
@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
 
     foundUser.subscribedServices = [createdSubscribedService._id, ...foundUser.subscribedServices];
 
-    wallet.general.amount -= subscription.price;
+    wallet.general.amount -= subscription.general.price;
 
     const foundAuthor = await db.Users.getById(subscription.authorId);
 
@@ -65,7 +65,7 @@ module.exports = async (req, res) => {
       return res.status(404).json({ message: errorMessages.SERVICES_404 }).end();
     }
 
-    foundAuthorWallet.amount += subscription.price;
+    foundAuthorWallet.general.amount += subscription.general.price;
 
     await foundAuthorWallet.save();
 

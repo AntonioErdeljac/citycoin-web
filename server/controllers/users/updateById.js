@@ -1,8 +1,6 @@
 const db = require('../../db');
 const { errorMessages } = require('../../constants');
-const { errors, tokens, hash } = require('../../utils');
-
-const { MIN_PASSWORD_LENGTH } = require('../../../common/constants');
+const { errors } = require('../../utils');
 
 module.exports = async (req, res) => {
   try {
@@ -15,7 +13,7 @@ module.exports = async (req, res) => {
     };
 
     const foundUser = await db.Users.getById(id, { authorId: user._id })
-      .select('+authentication.salt +authentcation.password');
+      .select('+authentication.salt +authentication.password');
 
     if (!foundUser) {
       return res.status(404).json({ message: errorMessages.USERS_404 }).end();
@@ -27,10 +25,7 @@ module.exports = async (req, res) => {
       return res.status(409).json({ message: errorMessages.USER_EMAIL_409 }).end();
     }
 
-    newUser.authentication = {
-      salt: foundUser.authentication.salt,
-      password: foundUser.authentication.password,
-    };
+    newUser.authentication = foundUser.authentication;
 
     if (!db.Users.isValid(newUser)) {
       return res.status(400).json({ message: errorMessages.USERS_400 }).end();
