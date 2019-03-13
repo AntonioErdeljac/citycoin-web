@@ -67,6 +67,12 @@ class Navbar extends React.Component {
               <div className="cc-navbar-vertical-divider" />
               <li className="cc-navbar-regular-item nav-item">
                 <Link to={paths.client.SUBSCRIPTIONS}>
+                  Novčanik
+                </Link>
+              </li>
+              <div className="cc-navbar-vertical-divider" />
+              <li className="cc-navbar-regular-item nav-item">
+                <Link to={paths.client.SUBSCRIPTIONS}>
                   Pretplate
                 </Link>
               </li>
