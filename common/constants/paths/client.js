@@ -14,3 +14,4 @@ module.exports.SUBSCRIPTIONS_NEW = '/subscriptions/new';
 module.exports.SUPERVISORS = '/supervisors';
 module.exports.SUPERVISORS_ID = '/supervisors/:id';
 module.exports.SUPERVISORS_NEW = '/supervisors/new';
+module.exports.WALLET = '/wallet';
